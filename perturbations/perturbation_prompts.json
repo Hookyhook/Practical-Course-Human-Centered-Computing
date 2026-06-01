@@ -1,0 +1,141 @@
+{
+  "system_prompt": "You are a text perturbation engine for a multilingual NLP research pipeline. Apply exactly the perturbation described in the user message. If the perturbation cannot be meaningfully applied, place the original text unchanged in the output field.",
+
+  "perturbations": {
+
+    "A1_emoji_relevant": {
+      "type": "SURFACE",
+      "EN": "Append exactly 2 emojis to the end of this claim that are thematically relevant to its topic. Do not insert emojis inside the text body. Do not change any words."
+    },
+
+    "A2_hashtagification": {
+      "type": "SURFACE",
+      "EN": "Keep the original claim text exactly as written. Then append exactly 3 hashtag keywords derived from the most important nouns in the claim (e.g. #Government #Policy #ClimateChange) followed by exactly 3 generic spam hashtags (e.g. #BreakingNews #MustRead #Viral). Do not modify any word in the original sentence."
+    },
+
+    "A4_stt_artifacts": {
+      "type": "SURFACE",
+      "EN": "Replace exactly 3 words in this claim with phonetically similar real words that a speech-to-text system would confuse (e.g. 'their' → 'there', 'policy' → 'police', 'won' → 'one', 'weather' → 'whether', 'new' → 'knew', 'change' → 'chance', 'right' → 'write'). Every replacement must be a valid existing word — never a misspelling. Apply one replacement per word. You must always make at least 1 substitution — never return the original text unchanged.",
+      "DE": "Ersetze in diesem deutschen Text genau 3 Wörter durch klanglich ähnliche echte Wörter, die ein Spracherkennungssystem verwechseln würde (z.B. 'wieder' → 'wider', 'Meer' → 'mehr', 'war' → 'wahr', 'seit' → 'seid', 'das' → 'dass', 'stil' → 'still'). Jede Ersetzung muss ein gültiges deutsches Wort sein — niemals eine Falschschreibung. Ein Ersatz pro Wort. Falls weniger als 3 geeignete Wörter vorhanden sind, ersetze so viele wie möglich.",
+      "ES": "Reemplaza exactamente 3 palabras en este texto en español por palabras reales fonéticamente similares que un sistema de reconocimiento de voz confundiría (p.ej. 'echo' → 'hecho', 'tubo' → 'tuvo', 'bello' → 'vello', 'caza' → 'casa', 'coser' → 'cocer', 'hola' → 'ola'). Cada reemplazo debe ser una palabra española válida, nunca una falta de ortografía. Un reemplazo por palabra. Si hay menos de 3 candidatos válidos, aplica tantos como sea posible.",
+      "FR": "Remplace exactement 3 mots dans ce texte en français par des mots réels phonétiquement similaires qu'un système de reconnaissance vocale confondrait (ex. 'son' → 'sont', 'peu' → 'peut', 'ou' → 'où', 'ces' → 'ses', 'mer' → 'mère', 'ver' → 'vert'). Chaque remplacement doit être un mot français valide, jamais une faute d'orthographe. Un remplacement par mot. S'il y a moins de 3 candidats valides, applique autant que possible.",
+      "PL": "Zastąp dokładnie 3 słowa w tym polskim tekście brzmiącymi podobnie prawdziwymi słowami, które system rozpoznawania mowy mógłby pomylić (np. 'może' → 'morze', 'czas' → 'czasz', 'rzepa' → 'rzeka', 'bar' → 'bar'). Każde zastąpienie musi być poprawnym polskim słowem — nigdy błędem ortograficznym. Jedno zastąpienie na słowo. Jeśli jest mniej niż 3 odpowiednie słowa, zastąp tyle ile możliwe.",
+      "HBS": "Zamijeni tačno 3 riječi u ovom tekstu stvarnim riječima koje zvuče slično i koje bi sistem za prepoznavanje govora mogao pobrkati (npr. 'sat' → 'sad', 'grad' → 'grâd', 'luk' → 'lûk', 'pas' → 'paz'). Svaka zamjena mora biti valjana riječ — nikad pogrešno napisana. Jedna zamjena po riječi. Ako ima manje od 3 pogodnih riječi, zamijeni koliko god je moguće.",
+      "HI": "इस हिंदी पाठ में ठीक 3 शब्दों को ऐसे वास्तविक शब्दों से बदलें जो उच्चारण में समान हों और जिन्हें स्पीच-टु-टेक्स्ट सिस्टम भ्रमित कर सकता है (जैसे 'में' → 'मैं', 'है' → 'हैं', 'की' → 'कि', 'को' → 'कौ'). हर प्रतिस्थापन एक वैध हिंदी शब्द होना चाहिए — कभी गलत वर्तनी नहीं। एक शब्द प्रति प्रतिस्थापन। यदि 3 से कम उपयुक्त शब्द हों तो जितने संभव हों उतने बदलें।",
+      "AR": "استبدل بالضبط 3 كلمات في هذا النص العربي بكلمات حقيقية تبدو متشابهة صوتياً وقد يخلط بينها نظام التعرف على الكلام (مثل 'ذ' ↔ 'ز'، 'ث' ↔ 'س'، 'ح' ↔ 'ه'، 'صحة' → 'سحة'، 'طريق' → 'تريق'). يجب أن يكون كل بديل كلمة عربية صحيحة — وليس خطأ إملائياً. استبدال واحد لكل كلمة. إذا كان هناك أقل من 3 كلمات مناسبة، طبّق أكبر عدد ممكن.",
+      "ML": "ഈ മലയാളം ടെക്‌സ്‌റ്റിൽ കൃത്യം 3 വാക്കുകൾ ഉച്ചാരണത്തിൽ സമാനമായ യഥാർത്ഥ വാക്കുകൾ ഉപയോഗിച്ച് മാറ്റുക, ഒരു സ്പീച്ച്-ടു-ടെക്‌സ്‌റ്റ് സിസ്റ്റം ആശയക്കുഴപ്പത്തിലാകുന്ന വിധം (ഉദാ. 'കാ' → 'ക', 'ൽ' → 'ൾ'). ഓരോ മാറ്റവും ഒരു സാധുവായ മലയാളം വാക്കായിരിക്കണം — ഒരിക്കലും തെറ്റായ സ്‌പെല്ലിംഗ് അല്ല. ഒരു വാക്കിന് ഒരു മാറ്റം. 3-ൽ കുറവ് യോഗ്യ വാക്കുകളുണ്ടെങ്കിൽ, കഴിയുന്നത്ര മാറ്റുക.",
+      "ZH": "将此中文文本中恰好3个词替换为发音相似、语音识别系统可能混淆的真实词语（例如：'的'→'地'、'他'→'她'、'在'→'再'、'那'→'哪'、'是'→'市'）。每个替换必须是有效的中文词语——绝不是拼写错误。每个词替换一次。若合适的目标词少于3个，则尽量替换。"
+    },
+
+    "B1_qualifier_removal": {
+      "type": "SEMANTIC",
+      "EN": "Remove all hedging and qualifying language from this claim to make it sound like a definitive statement of fact. Target words and phrases such as: allegedly, reportedly, according to, sources say, may, might, could, would, appears to, seems to, is said to, claims that, suggests. If no qualifying language is present, return the text unchanged.",
+      "DE": "Entferne alle abschwächenden und relativierenden Formulierungen aus dieser Behauptung, um sie wie eine definitive Tatsache klingen zu lassen. Zielwörter und -phrasen: angeblich, anscheinend, soll, könnte, würde, laut, nach Angaben von, Berichten zufolge, mutmaßlich, behauptet, offenbar, scheinbar, möglicherweise. Falls keine solchen Formulierungen vorhanden sind, gib den Text unverändert zurück.",
+      "ES": "Elimina todo el lenguaje de cobertura y calificación de esta afirmación para que suene como una declaración definitiva de hecho. Palabras y frases objetivo: supuestamente, según, podría, aparentemente, al parecer, se dice que, presuntamente, según informes, parece que, se afirma que, sugiere. Si no hay lenguaje calificador, devuelve el texto sin cambios.",
+      "FR": "Supprime tout le langage de couverture et de qualification de cette affirmation pour la faire sonner comme une déclaration factuelle définitive. Mots et expressions cibles : soi-disant, prétendument, selon, apparemment, il semblerait que, d'après, indiquerait, pourrait, aurait, il paraît que, on dit que, suggère. Si aucun langage qualificatif n'est présent, retourne le texte inchangé.",
+      "PL": "Usuń wszystkie wyrażenia osłabiające i kwalifikujące z tego stwierdzenia, aby brzmiało jak definitywne stwierdzenie faktu. Docelowe słowa i frazy: rzekomo, podobno, jakoby, według, może, mógłby, twierdzi się, ponoć, wydaje się, jak donoszą, sugeruje. Jeśli nie ma języka kwalifikującego, zwróć tekst bez zmian.",
+      "HBS": "Ukloni sve ograde i kvalifikatore iz ove tvrdnje kako bi zvučala kao definitivan iskaz činjenice. Ciljne riječi i fraze: navodno, tobože, prema, navodi se, mogao bi, čini se, tvrdi se, kako se izvještava, izgleda da, sugerira. Ako nema kvalifikatornog jezika, vrati tekst nepromijenjen.",
+      "HI": "इस दावे से सभी हेजिंग और योग्यता वाली भाषा हटाएं ताकि यह एक निश्चित तथ्य की तरह लगे। लक्षित शब्द और वाक्यांश: कथित रूप से, कहा जाता है, के अनुसार, शायद, हो सकता है, बताया जाता है, माना जाता है, सूत्रों के अनुसार, लगता है, दावा किया जाता है। यदि कोई योग्यता वाली भाषा नहीं है, तो पाठ अपरिवर्तित लौटाएं।",
+      "AR": "أزل كل لغة التحوط والتأهيل من هذا الادعاء لجعله يبدو كبيان حقيقي قاطع. الكلمات والعبارات المستهدفة: يُزعم، وفقاً لـ، يُقال إن، من المحتمل، يبدو أن، بحسب، زعم، يُفيد بأن، يُشير إلى، يُروى أن. إذا لم يكن هناك لغة تأهيل، أعد النص دون تغيير.",
+      "ML": "ഈ അവകാശവാദത്തിൽ നിന്ന് എല്ലാ ഹെഡ്ജിംഗ് ഭാഷയും നീക്കം ചെയ്ത് അത് ഒരു നിശ്ചിത വസ്തുതാ പ്രസ്താവനയായി തോന്നിക്കുക. ലക്ഷ്യ വാക്കുകൾ: ആരോപിക്കപ്പെടുന്നത്, പറയപ്പെടുന്നത്, അനുസരിച്ച്, ആകാം, തോന്നുന്നു, ഉറവിടങ്ങൾ പറയുന്നു. ഹെഡ്ജിംഗ് ഭാഷ ഇല്ലെങ്കിൽ, ടെക്‌സ്‌റ്റ് മാറ്റമില്ലാതെ തിരികെ നൽകുക.",
+      "ZH": "删除此声明中所有模糊性和限定性语言，使其听起来像确定性陈述。目标词汇：据称、据报道、据说、可能、似乎、根据、据悉、有消息称、声称、表示、据悉。如果没有限定性语言，则原文返回。"
+    },
+
+    "B2_temporal_drift": {
+      "type": "SEMANTIC",
+      "EN": "Shift every year or date mentioned in this claim forward by exactly 3 years to create a plausible but incorrect timeline. Then append exactly one short phrase anchoring the claim to a modern context (e.g. 'This resurfaced recently and is being widely shared.' or 'Experts confirmed this again last month.'). If no dates are present, only append the modern anchor phrase."
+    },
+
+    "C3_word_splitting": {
+      "type": "SURFACE",
+      "EN": "Select exactly 2 important content words or named entities in this claim and insert a single space inside each word at a natural-looking position to split it adversarially (e.g. 'vaccination' → 'vaccin ation', 'government' → 'govern ment'). The splits should look like plausible typos or formatting errors. Do not change any other words.",
+      "ZH": "在这段中文文本中选择恰好2个重要的内容词或命名实体，在每个词的合适位置插入一个空格将其拆分（例如：'疫苗接种' → '疫苗 接种'，'政府' → '政 府'）。拆分应看起来像合理的排版错误。不要改变其他任何词。",
+      "AR": "اختر بالضبط كلمتين مهمتين أو أسماء أعلام في هذا النص العربي وأدرج مسافة واحدة داخل كل كلمة في موضع طبيعي لتقسيمها بشكل مُربك (مثل 'مستشفى' → 'مست شفى'، 'حكومة' → 'حكو مة'). يجب أن تبدو التقسيمات كأخطاء طباعية معقولة. لا تغير أي كلمة أخرى.",
+      "HI": "इस हिंदी पाठ में ठीक 2 महत्वपूर्ण शब्दों या नामों का चयन करें और प्रत्येक शब्द के अंदर एक उचित स्थान पर एक स्पेस डालें (जैसे 'सरकार' → 'सर कार', 'टीकाकरण' → 'टीका करण')। विभाजन टाइपिंग त्रुटि जैसा दिखना चाहिए। अन्य कोई शब्द न बदलें।",
+      "ML": "ഈ മലയാളം ടെക്‌സ്‌റ്റിൽ കൃത്യം 2 പ്രധാനപ്പെട്ട വാക്കുകൾ അല്ലെങ്കിൽ പ്രോപ്പർ നൗൺ തിരഞ്ഞെടുത്ത് ഓരോ വാക്കിനുള്ളിൽ ഒരു സ്‌പേസ് ചേർക്കുക (ഉദാ. 'സർക്കാർ' → 'സർ ക്കാർ'). ടൈപ്പോ പോലെ തോന്നണം. മറ്റ് വാക്കുകൾ മാറ്റരുത്."
+    },
+
+    "D2_clickbait_llm": {
+      "type": "SURFACE",
+      "EN": "Rewrite this claim in a clickbait style. Prepend exactly one sensationalist hook phrase (e.g. 'EXPOSED:', 'BREAKING:', 'You won't believe this:', 'SHOCKING TRUTH:'). Then identify exactly 3 key nouns or verbs in the body and write them in ALL CAPS — leave every other word in its original case. Do not add, remove, or change any factual content.",
+      "DE": "Schreibe diese Behauptung im Clickbait-Stil um. Stell genau eine sensationalistische Einleitungsphrase voran (z.B. 'ENTHÜLLT:', 'BREAKING:', 'DAS WERDEN SIE NICHT GLAUBEN:', 'SCHOCKIEREND:'). Identifiziere dann genau 3 Schlüsselsubstantive oder -verben im Text und schreibe sie in GROSSBUCHSTABEN — alle anderen Wörter bleiben in ihrer ursprünglichen Schreibweise. Füge keine Fakten hinzu, entferne keine oder ändere keine.",
+      "ES": "Reescribe esta afirmación en estilo clickbait. Antepone exactamente una frase de gancho sensacionalista (p.ej. 'REVELADO:', 'URGENTE:', 'NO LO CREERÁS:', 'IMPACTANTE:'). Luego identifica exactamente 3 sustantivos o verbos clave en el cuerpo y escríbelos en MAYÚSCULAS — deja todas las demás palabras en su caso original. No añadas, elimines ni cambies ningún contenido factual.",
+      "FR": "Réécris cette affirmation dans un style clickbait. Préfixe exactement une phrase d'accroche sensationnaliste (ex. 'RÉVÉLÉ :', 'CHOQUANT :', 'VOUS NE LE CROIREZ PAS :', 'URGENT :'). Identifie ensuite exactement 3 noms ou verbes clés dans le corps et écris-les en MAJUSCULES — laisse tous les autres mots dans leur casse d'origine. N'ajoute, ne supprime ni ne modifie aucun contenu factuel.",
+      "PL": "Przepisz to twierdzenie w stylu clickbait. Poprzedź dokładnie jedną sensacyjną frazą wprowadzającą (np. 'UJAWNIONO:', 'SZOKUJĄCE:', 'NIE UWIERZYSZ:', 'PILNE:'). Następnie zidentyfikuj dokładnie 3 kluczowe rzeczowniki lub czasowniki w treści i napisz je WIELKIMI LITERAMI — pozostaw wszystkie inne słowa w oryginalnej formie. Nie dodawaj, nie usuwaj ani nie zmieniaj żadnych faktów.",
+      "HBS": "Prepiši ovu tvrdnju u stilu clickbaita. Dodaj na početak točno jednu senzacionalističku frazu (npr. 'OTKRIVENO:', 'ŠOKANTNO:', 'NEĆETE VJEROVATI:', 'HITNO:'). Zatim identificiraj točno 3 ključne imenice ili glagola i napiši ih VELIKIM SLOVIMA — ostavi sve ostale riječi u izvornom obliku. Nemoj dodavati, uklanjati niti mijenjati činjenični sadržaj.",
+      "HI": "इस दावे को क्लिकबेट शैली में फिर से लिखें। ठीक एक सनसनीखेज हुक वाक्यांश जोड़ें (जैसे 'खुलासा:', 'चौंकाने वाला:', 'आप यकीन नहीं करेंगे:', 'ब्रेकिंग:'). फिर मुख्य भाग में ठीक 3 महत्वपूर्ण संज्ञा या क्रिया की पहचान करें और उन्हें बड़े अक्षरों में लिखें — बाकी सभी शब्द मूल रूप में रखें। कोई तथ्य न जोड़ें, न हटाएं, न बदलें।",
+      "AR": "أعد صياغة هذا الادعاء بأسلوب النقر الإلزامي (clickbait). أضف في البداية بالضبط عبارة افتتاحية إثارية واحدة (مثل 'مكشوف:', 'صادم:', 'لن تصدق:', 'عاجل:'). ثم حدد بالضبط 3 أسماء أو أفعال رئيسية في النص واكتبها بالأحرف الكبيرة (أو بالتشديد في العربية باستخدام الكتابة بالكامل بشكل لافت) — اترك جميع الكلمات الأخرى كما هي. لا تضف أو تحذف أو تغير أي محتوى واقعي.",
+      "ML": "ഈ അവകാശവാദം ക്ലിക്ക്‌ബൈറ്റ് ശൈലിയിൽ എഴുതുക. ഒരു സൻസേഷനൽ ഹുക്ക് ഫ്രേസ് മുന്നിൽ ചേർക്കുക (ഉദാ. 'വെളിപ്പെടുത്തൽ:', 'ഞെട്ടിക്കുന്നത്:', 'നിങ്ങൾ വിശ്വസിക്കില്ല:'). തുടർന്ന് 3 പ്രധാന നൗൺ അല്ലെങ്കിൽ ക്രിയ കണ്ടെത്തി അവ ക്യാപിറ്റൽ അക്ഷരങ്ങളിൽ (അല്ലെങ്കിൽ ഊന്നൽ നൽകി) എഴുതുക. മറ്റ് വാക്കുകൾ മാറ്റരുത്. യഥാർത്ഥ ഉള്ളടക്കം മാറ്റരുത്.",
+      "ZH": "将此声明改写为标题党（clickbait）风格。在开头加上恰好一个耸人听闻的钩子短语（例如：'曝光：'、'震惊：'、'难以置信：'、'紧急：'）。然后在正文中找出恰好3个关键名词或动词，将它们全部大写（中文可用【】标注强调）——其他所有词保持原样。不增加、删除或修改任何事实内容。"
+    },
+
+    "E2_presupposition": {
+      "type": "SURFACE",
+      "EN": "Prepend exactly one short loaded presupposition frame to this claim that smuggles in an assumption as if it were already established fact. Examples: 'In what should come as no surprise,', 'As has long been known,', 'Confirming what many already suspected,', 'Despite repeated cover-ups,'. Choose the frame that fits the topic most naturally. Do not change the original claim text itself.",
+      "DE": "Stell dieser Behauptung genau einen kurzen, vorbelasteten Präsuppositionsrahmen voran, der eine Annahme als bereits feststehende Tatsache einschmuggelt. Beispiele: 'Wie es schon lange bekannt ist,', 'Was viele bereits vermutet haben,', 'Trotz wiederholter Vertuschungsversuche,', 'Wenig überraschend,'. Wähle den Rahmen, der am natürlichsten zum Thema passt. Ändere den originalen Behauptungstext nicht.",
+      "ES": "Antepone exactamente un marco de presuposición cargado a esta afirmación que introduce una suposición como si ya fuera un hecho establecido. Ejemplos: 'Como ya se sospechaba,', 'Lo que muchos ya sabían,', 'A pesar de los encubrimientos,', 'Sin que deba sorprender a nadie,'. Elige el marco que encaje más naturalmente con el tema. No cambies el texto original de la afirmación.",
+      "FR": "Fais précéder cette affirmation d'exactement un court cadre de présupposition chargé qui fait passer une hypothèse comme un fait déjà établi. Exemples : 'Comme on le sait depuis longtemps,', 'Confirmant ce que beaucoup soupçonnaient,', 'Malgré les tentatives de dissimulation,', 'Sans grande surprise,'. Choisis le cadre qui correspond le plus naturellement au sujet. Ne modifie pas le texte original de l'affirmation.",
+      "PL": "Poprzedź to twierdzenie dokładnie jednym krótkim, obciążonym ramą presupozycji, która przemyca założenie jako już ustaloną prawdę. Przykłady: 'Jak od dawna wiadomo,', 'Potwierdzając to, co wielu podejrzewało,', 'Pomimo wielokrotnych prób zatuszowania,', 'Co nikogo nie powinno dziwić,'. Wybierz ramę, która najnaturalniej pasuje do tematu. Nie zmieniaj oryginalnego tekstu twierdzenia.",
+      "HBS": "Dodaj na početak ove tvrdnje točno jedan kratak okvir napunjene presupozicije koji uvodi pretpostavku kao već utvrđenu činjenicu. Primjeri: 'Kao što je odavno poznato,', 'Potvrđujući ono što su mnogi sumnjali,', 'Unatoč ponovljenim prikrivanjima,', 'Što ne bi trebalo nikoga iznenaditi,'. Odaberi okvir koji se najprirodnijeprilagođava temi. Ne mijenjaj originalni tekst tvrdnje.",
+      "HI": "इस दावे से पहले ठीक एक छोटा भारयुक्त पूर्वधारणा फ्रेम जोड़ें जो एक मान्यता को पहले से स्थापित तथ्य की तरह प्रस्तुत करे। उदाहरण: 'जैसा कि लंबे समय से ज्ञात है,', 'जो कई लोगों को पहले से संदेह था उसकी पुष्टि करते हुए,', 'बार-बार दबाने की कोशिशों के बावजूद,', 'किसी को आश्चर्य नहीं होना चाहिए,'. सबसे स्वाभाविक रूप से फिट होने वाला फ्रेम चुनें। मूल दावे का पाठ न बदलें।",
+      "AR": "أضف في بداية هذا الادعاء بالضبط إطار افتراض مُحمَّل قصير يُدرج افتراضاً كأنه حقيقة ثابتة. أمثلة: 'كما هو معروف منذ فترة طويلة،', 'مؤكداً ما شك فيه كثيرون،', 'على الرغم من محاولات التعتيم المتكررة،', 'وهو ما لا ينبغي أن يفاجئ أحداً،'. اختر الإطار الأنسب للموضوع. لا تغير نص الادعاء الأصلي.",
+      "ML": "ഈ അവകാശവാദത്തിന് മുന്നിൽ ഒരു ചെറിയ ലോഡഡ് പ്രിസ്സപോസിഷൻ ഫ്രേം ചേർക്കുക, അത് ഒരു അനുമാനത്തെ ഇതിനകം സ്ഥാപിതമായ വസ്തുതയായി അവതരിപ്പിക്കണം. ഉദാഹരണങ്ങൾ: 'ദീർഘകാലമായി അറിയാവുന്നതുപോലെ,', 'പലരും സംശയിച്ചത് സ്ഥിരീകരിക്കുന്നു,', 'ആവർത്തിച്ചുള്ള മറച്ചുവെക്കലുകൾക്ക് ശേഷവും,'. ഏറ്റവും സ്വാഭാവികമായ ഫ്രേം തിരഞ്ഞെടുക്കുക. മൂല ടെക്‌സ്‌റ്റ് മാറ്റരുത്.",
+      "ZH": "在此声明前加上恰好一个简短的预设框架，将一个假设作为已知事实偷带进来。示例：'众所周知，'、'正如许多人早已怀疑的那样，'、'尽管多次试图掩盖，'、'这不足为奇，'。选择与主题最自然契合的框架。不要修改原始声明文本。"
+    }
+
+  },
+
+  "paper_perturbations": {
+
+    "P_negation_low": {
+      "type": "SEMANTIC",
+      "EN": "Add a single negation to this claim so that it asserts the opposite of the original. Insert 'not', 'never', or an equivalent negation word at the most natural grammatical position. The result must be a fluent English sentence. Do not change any other words."
+    },
+
+    "P_negation_high": {
+      "type": "SEMANTIC",
+      "EN": "Apply a double negation to this claim. First negate the core assertion, then wrap the whole thing in a denial frame. The output must follow this structure: 'It is not true that [single-negated version of the claim].' The result must be fluent English."
+    },
+
+    "P_entity_low": {
+      "type": "SEMANTIC",
+      "EN": "Identify the single most prominent named entity in this claim (person, organisation, or location) and replace it with a different but plausible entity of the same type (e.g. replace one university with another university, one politician with another politician, one country with a neighbouring country). Keep all other words exactly as written."
+    },
+
+    "P_entity_high": {
+      "type": "SEMANTIC",
+      "EN": "Identify every named entity in this claim (persons, organisations, locations, dates) and replace each one with a different but plausible entity of the same type. Keep all non-entity words exactly as written."
+    },
+
+    "P_llm_rewrite_low": {
+      "type": "SEMANTIC",
+      "EN": "Rewrite this claim as a paraphrase that changes as few words as possible. You must change at least 1 word — do not return the original text. Swap one or two words for close synonyms or restructure one short phrase while keeping everything else identical. Preserve the exact meaning and all factual content."
+    },
+
+    "P_llm_rewrite_high": {
+      "type": "SEMANTIC",
+      "EN": "Rewrite this claim using as many word changes as possible while fully preserving the meaning and all factual content. Aim for maximum Levenshtein distance from the original — use different vocabulary, restructure the sentence, change word order. The rewritten claim must convey exactly the same information."
+    },
+
+    "P_dialect_aae": {
+      "type": "SURFACE",
+      "EN": "Rewrite this claim in African American English (AAVE). Apply characteristic AAVE grammatical and lexical features such as habitual 'be', copula deletion, double negatives, and idiomatic vocabulary. Preserve all factual content exactly."
+    },
+
+    "P_dialect_jamaican": {
+      "type": "SURFACE",
+      "EN": "Rewrite this claim in Jamaican Patois (Jamaican Creole). Apply characteristic Patois features such as 'mi' for 'I/me', 'dem' for 'them/those', 'nuh' for negation, 'fi' for 'to/for', and typical Jamaican lexical items. Preserve all factual content exactly."
+    },
+
+    "P_dialect_pidgin": {
+      "type": "SURFACE",
+      "EN": "Rewrite this claim in Nigerian Pidgin English. Apply characteristic Naija Pidgin features such as 'e' for 'he/she/it', 'dem' for 'they', 'dey' for 'is/are/am', 'no' for negation, 'wey' as a relative pronoun, and typical Pidgin lexical patterns. Preserve all factual content exactly."
+    },
+
+    "P_dialect_singlish": {
+      "type": "SURFACE",
+      "EN": "Rewrite this claim in Singlish (Singaporean English). Apply characteristic Singlish features such as discourse particles ('lah', 'leh', 'meh', 'lor', 'sia'), topic-fronting, copula omission, and typical Singlish expressions. Preserve all factual content exactly."
+    }
+
+  }
+}
