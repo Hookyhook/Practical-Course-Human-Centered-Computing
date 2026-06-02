@@ -52,8 +52,8 @@ REQUEST_DELAY = 0.5  # seconds between API calls (gives the GPU breathing room)
 # ── Perturbation metadata ──────────────────────────────────────────────────────
 #
 # description      → criteria sent to the verifier as its task instruction
-# expect_preserved → True  = meaning MUST be preserved  (families A, C, D, E1)
-#                    False = meaning IS intentionally altered (families B, E2)
+# expect_preserved → True  = meaning MUST be preserved  (families A, C, D, P_rewrite/dialect/typos)
+#                    False = meaning IS intentionally altered (families B, E2, P_negation/entity)
 
 PERTURBATION_META = {
 
@@ -61,9 +61,9 @@ PERTURBATION_META = {
 
     "A1_emoji_relevant": {
         "description": (
-            "A topic-relevant emoji was appended to the end of the claim. "
-            "Check: (1) at least one emoji is present, "
-            "(2) the emoji relates thematically to the topic of the claim, "
+            "Exactly 2 topic-relevant emojis were appended to the end of the claim. "
+            "Check: (1) exactly 2 emojis are present at the end of the text (not inside it), "
+            "(2) both emojis relate thematically to the topic of the claim, "
             "(3) the factual content is completely unchanged."
         ),
         "expect_preserved": True,
@@ -79,10 +79,12 @@ PERTURBATION_META = {
     },
     "A2_hashtagification": {
         "description": (
-            "Keywords in the claim were converted to hashtags and spam tags were appended. "
-            "Check: (1) at least one word has been turned into a #hashtag, "
-            "(2) trending or spam tags (e.g. #fakemedia #trending) appear at the end, "
-            "(3) the factual content is still readable and unchanged."
+            "The original claim text was kept intact, then exactly 3 topic hashtags and "
+            "exactly 3 generic spam hashtags were appended (6 hashtags total). "
+            "Check: (1) the original claim text is present and unmodified at the start, "
+            "(2) exactly 3 topic-derived hashtags appear (e.g. #Government #Policy), "
+            "(3) exactly 3 generic spam hashtags follow (e.g. #BreakingNews #Viral #MustRead), "
+            "(4) the total hashtag count is 6."
         ),
         "expect_preserved": True,
     },
@@ -124,10 +126,14 @@ PERTURBATION_META = {
     },
     "B2_temporal_drift": {
         "description": (
-            "A date, year, or temporal expression was changed to a different one. "
-            "Check: (1) a time reference (year, date, month, period) in the original "
-            "has been shifted to a different value in the perturbed text, "
-            "(2) the factual timeline of the claim has therefore changed. "
+            "Dates/years were shifted forward by 3 years AND a short modern-context anchor phrase "
+            "was appended (e.g. 'This resurfaced recently and is being widely shared.'). "
+            "If the original had no dates, only the anchor phrase was added. "
+            "Check: (1a) IF dates were present — each year/date in the original has been increased "
+            "by approximately 3 years in the perturbed text; "
+            "(1b) IF no dates were present — the text is otherwise unchanged; "
+            "(2) a short anchor phrase has been appended to the end in either case, "
+            "(3) no other factual content was added or removed beyond the date shift and anchor phrase. "
             "IMPORTANT: meaning IS intentionally altered here — that is expected and correct."
         ),
         "expect_preserved": False,
@@ -158,46 +164,33 @@ PERTURBATION_META = {
     },
     "C3_word_splitting": {
         "description": (
-            "At least one word was split mid-token using a space, hyphen, or punctuation "
-            "(e.g. 'vaccination' → 'vac-cination', 'government' → 'govern ment'). "
-            "Check: (1) at least one word appears split in an unnatural position, "
-            "(2) the factual meaning is unchanged."
+            "Exactly 2 important content words were split mid-token by inserting a space "
+            "at a natural-looking position (e.g. 'vaccination' → 'vaccin ation', "
+            "'government' → 'govern ment'). "
+            "Check: (1) exactly 2 words appear split at unnatural positions, "
+            "(2) the splits resemble plausible typos or formatting errors, "
+            "(3) the factual meaning is unchanged."
         ),
         "expect_preserved": True,
     },
 
     # ── Family D: Style / Register ─────────────────────────────────────────────
 
-    "D1_formal_to_casual": {
+    "D2_clickbait_llm": {
         "description": (
-            "The claim was rewritten in a casual, informal register. "
-            "Check: (1) informal language markers are present "
-            "(contractions, colloquialisms, simplified or slang vocabulary), "
-            "(2) the factual claim — all entities, actions, numbers, and relationships — is unchanged."
-        ),
-        "expect_preserved": True,
-    },
-    "D1_casual_to_formal": {
-        "description": (
-            "The claim was rewritten in a formal, academic register. "
-            "Check: (1) formal language markers are present "
-            "(no contractions, elevated vocabulary, official or academic tone), "
-            "(2) the factual claim — all entities, actions, numbers, and relationships — is unchanged."
-        ),
-        "expect_preserved": True,
-    },
-    "D2_clickbait": {
-        "description": (
-            "The claim was rewritten in clickbait style. "
-            "Check: (1) sensationalist or engagement-bait phrasing is present "
-            "(e.g. 'You won't believe...', question framing, ALL CAPS, hyperbole, listicle hooks), "
-            "(2) the underlying factual claim is preserved — no new facts were invented."
+            "The claim was rewritten in clickbait style by an LLM: one sensationalist hook phrase "
+            "was prepended (e.g. 'EXPOSED:', 'BREAKING:', 'You won't believe this:') and exactly "
+            "3 key nouns or verbs in the body were written in ALL CAPS. "
+            "Check: (1) a sensationalist hook phrase is present at the start, "
+            "(2) exactly 3 words in the body are in ALL CAPS while all others keep their original casing, "
+            "(3) the underlying factual claim is preserved — no new facts were invented."
         ),
         "expect_preserved": True,
     },
     "D3_back_translation_es": {
         "description": (
-            "The claim was translated to Spanish and back to English, producing subtle paraphrase artifacts. "
+            "The claim was translated to Spanish and back to its original language, "
+            "producing subtle paraphrase artifacts from the round-trip. "
             "Check: (1) the wording differs slightly from the original "
             "(different word choices, minor restructuring typical of translation round-trips), "
             "(2) the difference is consistent with translation artifacts, not intentional edits, "
@@ -207,7 +200,8 @@ PERTURBATION_META = {
     },
     "D3_back_translation_de": {
         "description": (
-            "The claim was translated to German and back to English, producing subtle paraphrase artifacts. "
+            "The claim was translated to German and back to its original language, "
+            "producing subtle paraphrase artifacts from the round-trip. "
             "Check: (1) the wording differs slightly from the original "
             "(different word choices, minor restructuring typical of translation round-trips), "
             "(2) the difference is consistent with translation artifacts, not intentional edits, "
@@ -218,15 +212,6 @@ PERTURBATION_META = {
 
     # ── Family E: Rhetorical ───────────────────────────────────────────────────
 
-    "E1_voice_transform": {
-        "description": (
-            "The grammatical voice of the claim was switched (active ↔ passive). "
-            "Check: (1) if the original is active voice, the perturbed is passive, or vice versa, "
-            "(2) all entities, actions, and factual content are fully preserved — "
-            "nothing was added, removed, or changed beyond the voice transformation."
-        ),
-        "expect_preserved": True,
-    },
     "E2_presupposition": {
         "description": (
             "A hidden presupposition was embedded into the claim — a framing that implies "
@@ -238,6 +223,125 @@ PERTURBATION_META = {
             "IMPORTANT: meaning IS intentionally altered here — that is expected and correct."
         ),
         "expect_preserved": False,
+    },
+
+    # ── Paper perturbations (EN only) ─────────────────────────────────────────
+    # Meaning-altering: P_negation_*, P_entity_*
+    # Meaning-preserving: P_llm_rewrite_*, P_dialect_*, P_typos_*
+
+    "P_negation_low": {
+        "description": (
+            "A single negation word ('not', 'never', or equivalent) was inserted to make the claim "
+            "assert the opposite of the original. "
+            "Check: (1) a negation is clearly present in the perturbed text that was absent in the original, "
+            "(2) the core assertion is now reversed. "
+            "IMPORTANT: meaning IS intentionally altered here — that is expected and correct."
+        ),
+        "expect_preserved": False,
+    },
+    "P_negation_high": {
+        "description": (
+            "A double negation was applied: the core assertion was negated, then wrapped in a denial frame "
+            "('It is not true that [negated claim].'). "
+            "Check: (1) the text begins with or contains 'It is not true that', "
+            "(2) the embedded claim is itself negated, "
+            "(3) the overall assertion is the opposite of the original. "
+            "IMPORTANT: meaning IS intentionally altered here — that is expected and correct."
+        ),
+        "expect_preserved": False,
+    },
+    "P_entity_low": {
+        "description": (
+            "The single most prominent named entity (person, organisation, or location) was replaced "
+            "with a different but plausible entity of the same type. "
+            "Check: (1) exactly one named entity has changed to a different but type-consistent entity, "
+            "(2) all other words are unchanged. "
+            "IMPORTANT: meaning IS intentionally altered here — that is expected and correct."
+        ),
+        "expect_preserved": False,
+    },
+    "P_entity_high": {
+        "description": (
+            "Every named entity in the claim (persons, organisations, locations, dates) was replaced "
+            "with a different but plausible entity of the same type. "
+            "Check: (1) multiple named entities have been substituted, "
+            "(2) all non-entity words are unchanged. "
+            "IMPORTANT: meaning IS intentionally altered here — that is expected and correct."
+        ),
+        "expect_preserved": False,
+    },
+    "P_llm_rewrite_low": {
+        "description": (
+            "The claim was minimally paraphrased: one or two words were swapped for synonyms "
+            "or a short phrase was lightly restructured. "
+            "Check: (1) the wording differs slightly from the original (at least one word changed), "
+            "(2) the texts are not identical, "
+            "(3) all factual content — entities, dates, quantities, relationships — is fully preserved."
+        ),
+        "expect_preserved": True,
+    },
+    "P_llm_rewrite_high": {
+        "description": (
+            "The claim was heavily paraphrased: vocabulary, sentence structure, and word order were "
+            "changed as much as possible while preserving the meaning. "
+            "Check: (1) the wording differs substantially from the original, "
+            "(2) the factual content — entities, dates, quantities, relationships — is fully preserved."
+        ),
+        "expect_preserved": True,
+    },
+    "P_dialect_aae": {
+        "description": (
+            "The claim was rewritten in African American English (AAVE). "
+            "Check: (1) AAVE grammatical or lexical features are present "
+            "(e.g. habitual 'be', copula deletion, double negatives, idiomatic vocabulary), "
+            "(2) all factual content is preserved."
+        ),
+        "expect_preserved": True,
+    },
+    "P_dialect_jamaican": {
+        "description": (
+            "The claim was rewritten in Jamaican Patois. "
+            "Check: (1) Patois features are present "
+            "(e.g. 'mi' for I/me, 'dem' for they, 'nuh' for negation, 'fi' for to/for), "
+            "(2) all factual content is preserved."
+        ),
+        "expect_preserved": True,
+    },
+    "P_dialect_pidgin": {
+        "description": (
+            "The claim was rewritten in Nigerian Pidgin English. "
+            "Check: (1) Naija Pidgin features are present "
+            "(e.g. 'e' for he/she/it, 'dem' for they, 'dey' for is/are, 'wey' as relative pronoun), "
+            "(2) all factual content is preserved."
+        ),
+        "expect_preserved": True,
+    },
+    "P_dialect_singlish": {
+        "description": (
+            "The claim was rewritten in Singlish (Singaporean English). "
+            "Check: (1) Singlish features are present "
+            "(e.g. discourse particles 'lah', 'leh', 'meh', 'lor', topic-fronting, copula omission), "
+            "(2) all factual content is preserved."
+        ),
+        "expect_preserved": True,
+    },
+    "P_typos_low": {
+        "description": (
+            "One character-level typo was introduced into the claim "
+            "(insert, delete, substitute, or transpose a single character in one word). "
+            "Check: (1) exactly one word contains an obvious typo, "
+            "(2) the text is still parseable and the factual meaning is unchanged."
+        ),
+        "expect_preserved": True,
+    },
+    "P_typos_high": {
+        "description": (
+            "Three character-level typos were introduced across different words "
+            "(each typo is an insert, delete, substitute, or transpose of a single character). "
+            "Check: (1) three words contain typos, "
+            "(2) the text is still parseable and the factual meaning is unchanged."
+        ),
+        "expect_preserved": True,
     },
 }
 

@@ -1,20 +1,31 @@
 import json
 import random
 from pathlib import Path
-from openai import OpenAI
 
 # ── config ────────────────────────────────────────────────────────────────────
 
 PROMPTS = json.loads((Path(__file__).parent / "perturbation_prompts.json").read_text())
 SYSTEM  = PROMPTS["system_prompt"]
 
-client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+LM_STUDIO_BASE_URL = "http://localhost:1234/v1"
+LM_STUDIO_API_KEY  = "lm-studio"
+MODEL_NAME         = "qwen/qwen3.6-35b-a3b"
+
+_client = None  # lazy-initialised on first LLM call
+
+def _get_client():
+    global _client
+    if _client is None:
+        from openai import OpenAI
+        _client = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key=LM_STUDIO_API_KEY)
+    return _client
 
 # ── llm helper ────────────────────────────────────────────────────────────────
 
 def _llm(instruction: str, text: str) -> str:
+    client = _get_client()
     resp = client.chat.completions.create(
-        model="qwen/qwen3.6-35b-a3b",
+        model=MODEL_NAME,
         messages=[
             {"role": "system", "content": SYSTEM},
             {"role": "user",   "content": f"{instruction}\n\n{text}"},
@@ -37,53 +48,67 @@ _HOMOGLYPH_MAP = {
 }
 
 _LEET_MAP = {
+    # Latin
     "a": "4", "e": "3", "i": "1", "o": "0",
     "s": "5", "t": "7", "l": "1", "g": "9",
+    # Arabic (Arabizi — established internet transliteration)
+    "ع": "3", "ح": "7", "ق": "9", "خ": "5", "ء": "2",
+    # Chinese number-character substitutions (internet slang)
+    "一": "1", "二": "2", "三": "3", "四": "4", "五": "5",
+    "六": "6", "七": "7", "八": "8", "九": "9", "零": "0",
 }
-
-_CLICKBAIT_PREFIXES = [
-    "EXPOSED:", "BREAKING:", "SHOCKING:", "BOMBSHELL:",
-    "YOU WON'T BELIEVE THIS:", "THEY DON'T WANT YOU TO KNOW:",
-]
 
 # OCR: visually similar character confusions, keyed by original char
 _OCR_MAP = {
+    # Latin
     "o": "0", "O": "0",
     "l": "1", "i": "!",
     "e": "3", "a": "@",
     "s": "5", "t": "7",
     "g": "q", "b": "6",
+    # Arabic (common OCR confusion pairs)
+    "ر": "ز", "د": "ذ", "ح": "ج", "ب": "ت", "ن": "ي",
+    # Chinese (visually similar character pairs)
+    "己": "已", "土": "士", "末": "未", "人": "入",
+    "大": "太", "天": "夭", "干": "于", "日": "目",
+    # Devanagari / Hindi (visually similar pairs)
+    "म": "भ", "ग": "प", "ह": "ब", "श": "ष",
+    # Malayalam (visually similar pairs)
+    "ര": "ദ", "ക": "ഥ", "ജ": "ഞ",
 }
 
-def _ocr_artifacts(text: str) -> str:
-    words = text.split()
-    used_subs = set()
-    applied = 0
-    result = list(words)
 
-    for wi, word in enumerate(words):
+def _ocr_artifacts(text: str) -> str:
+    chars = list(text)
+    eligible = [i for i, c in enumerate(chars) if c in _OCR_MAP]
+    # apply up to 3 substitutions, one per unique source character
+    seen_sources: set[str] = set()
+    applied = 0
+    for i in eligible:
         if applied >= 3:
             break
-        for ci, char in enumerate(word):
-            sub = _OCR_MAP.get(char)
-            if sub and sub not in used_subs:
-                chars = list(result[wi])
-                chars[ci] = sub
-                result[wi] = "".join(chars)
-                used_subs.add(sub)
-                applied += 1
-                break  # one substitution per word
-
-    return " ".join(result)
+        src = chars[i]
+        if src not in seen_sources:
+            chars[i] = _OCR_MAP[src]
+            seen_sources.add(src)
+            applied += 1
+    return "".join(chars)
 
 
 def _emoji_disruptive(text: str) -> str:
     words = text.split()
-    if len(words) < 2:
-        return text
-    pos = random.randint(1, len(words) - 1)
-    words.insert(pos, random.choice(_DISRUPTIVE_EMOJIS))
-    return " ".join(words)
+    emoji = random.choice(_DISRUPTIVE_EMOJIS)
+    if len(words) >= 2:
+        # Spaced scripts (Latin, Arabic, etc.): insert between words
+        pos = random.randint(1, len(words) - 1)
+        words.insert(pos, emoji)
+        return " ".join(words)
+    else:
+        # Non-spaced scripts (CJK): insert at a random character position
+        if len(text) < 2:
+            return text
+        pos = random.randint(1, len(text) - 1)
+        return text[:pos] + emoji + text[pos:]
 
 
 def _homoglyphs(text: str) -> str:
@@ -96,24 +121,25 @@ def _homoglyphs(text: str) -> str:
 
 def _leetspeak(text: str) -> str:
     chars = list(text)
-    eligible = [i for i, c in enumerate(chars) if c.lower() in _LEET_MAP]
+    eligible = [i for i, c in enumerate(chars) if c in _LEET_MAP or c.lower() in _LEET_MAP]
     for i in random.sample(eligible, min(3, len(eligible))):
-        chars[i] = _LEET_MAP[chars[i].lower()]
+        key = chars[i] if chars[i] in _LEET_MAP else chars[i].lower()
+        chars[i] = _LEET_MAP[key]
     return "".join(chars)
 
 
-def _clickbait_rule(text: str) -> str:
-    words = text.split()
-    capitalised = " ".join(
-        w.upper() if w.isalpha() and len(w) > 4 else w for w in words
-    )
-    return f"{random.choice(_CLICKBAIT_PREFIXES)} {capitalised}"
+# Google Translate language codes for each pipeline lang tag
+_LANG_CODE_MAP: dict[str, str] = {
+    "EN": "en", "DE": "de", "ES": "es", "FR": "fr",
+    "PL": "pl", "HBS": "sr", "HI": "hi", "AR": "ar",
+    "ML": "ml", "ZH": "zh-CN", "PT": "pt",
+}
 
-
-def _back_translate(text: str, pivot: str) -> str:
+def _back_translate(text: str, pivot: str, lang: str = "EN") -> str:
     from deep_translator import GoogleTranslator
-    mid = GoogleTranslator(source="en", target=pivot).translate(text)
-    return GoogleTranslator(source=pivot, target="en").translate(mid)
+    src = _LANG_CODE_MAP.get(lang.upper(), "auto")
+    mid = GoogleTranslator(source=src, target=pivot).translate(text)
+    return GoogleTranslator(source=pivot, target=src).translate(mid)
 
 # ── paper perturbation rule-based implementations (EN only) ──────────────────
 
@@ -154,13 +180,12 @@ _LLM_PERTURBATIONS = [
 ]
 
 _RULE_PERTURBATIONS = {
-    "A1_emoji_disruptive":    lambda text, _: _emoji_disruptive(text),
-    "A3_ocr_artifacts":       lambda text, _: _ocr_artifacts(text),
-    "C1_homoglyphs":          lambda text, _: _homoglyphs(text),
-    "C2_leetspeak":           lambda text, _: _leetspeak(text),
-    "D2_clickbait_rule":      lambda text, _: _clickbait_rule(text),
-    "D3_back_translation_de": lambda text, _: _back_translate(text, "de"),
-    "D3_back_translation_es": lambda text, _: _back_translate(text, "es"),
+    "A1_emoji_disruptive":    lambda text, _:    _emoji_disruptive(text),
+    "A3_ocr_artifacts":       lambda text, _:    _ocr_artifacts(text),
+    "C1_homoglyphs":          lambda text, _:    _homoglyphs(text),
+    "C2_leetspeak":           lambda text, _:    _leetspeak(text),
+    "D3_back_translation_de": lambda text, lang: _back_translate(text, "de", lang),
+    "D3_back_translation_es": lambda text, lang: _back_translate(text, "es", lang),
 }
 
 # ── paper perturbations (EN only) ─────────────────────────────────────────────
