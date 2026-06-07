@@ -13,7 +13,6 @@ Output CSV adds four columns to the original:
   perturbation_applied  (bool)
   meaning_preserved     (bool)
   verified              (bool)  — true iff both criteria are met as expected
-  reasoning             (str)   — model's explanation
   verify_error          (str)   — non-empty if something went wrong
 
 Usage:
@@ -104,10 +103,9 @@ PERTURBATION_META = {
             "merged words, or missing apostrophes "
             "(e.g. 'u' for 'you', homophones, contracted word boundaries). "
             "Check: (1) at least one such error is visible, "
-            "(2) the text is still parseable by a human, "
-            "(3) the factual core meaning is unchanged."
+            "(2) the text is still parseable by a human."
         ),
-        "expect_preserved": True,
+        "expect_preserved": None,  # neutral — meaning may or may not shift; only application is checked
     },
 
     # ── Family B: Semantic & Argumentative (meaning intentionally altered) ────
@@ -187,9 +185,9 @@ PERTURBATION_META = {
         ),
         "expect_preserved": True,
     },
-    "D3_back_translation_es": {
+    "D3_back_translation_it": {
         "description": (
-            "The claim was translated to Spanish and back to its original language, "
+            "The claim was translated to Italian and back to its original language, "
             "producing subtle paraphrase artifacts from the round-trip. "
             "Check: (1) the wording differs slightly from the original "
             "(different word choices, minor restructuring typical of translation round-trips), "
@@ -198,9 +196,9 @@ PERTURBATION_META = {
         ),
         "expect_preserved": True,
     },
-    "D3_back_translation_de": {
+    "D3_back_translation_ru": {
         "description": (
-            "The claim was translated to German and back to its original language, "
+            "The claim was translated to Russian and back to its original language, "
             "producing subtle paraphrase artifacts from the round-trip. "
             "Check: (1) the wording differs slightly from the original "
             "(different word choices, minor restructuring typical of translation round-trips), "
@@ -327,70 +325,27 @@ PERTURBATION_META = {
     },
     "P_typos_low": {
         "description": (
-            "One character-level typo was introduced into the claim "
-            "(insert, delete, substitute, or transpose a single character in one word). "
-            "Check: (1) exactly one word contains an obvious typo, "
-            "(2) the text is still parseable and the factual meaning is unchanged."
+            "The claim was rewritten by an LLM introducing a small number of social-media-style typos "
+            "and abbreviations (1–2 changes, low edit ratio). "
+            "Common patterns: letter swaps, shortened words (e.g. 'sighned' for 'signed', "
+            "'EO' for 'executive order', 'da' for 'the'). "
+            "Check: (1) 1–2 words show typos or informal abbreviations, "
+            "(2) the claim is still easily readable, "
+            "(3) the factual meaning is unchanged."
         ),
         "expect_preserved": True,
     },
     "P_typos_high": {
         "description": (
-            "Three character-level typos were introduced across different words "
-            "(each typo is an insert, delete, substitute, or transpose of a single character). "
-            "Check: (1) three words contain typos, "
-            "(2) the text is still parseable and the factual meaning is unchanged."
+            "The claim was rewritten by an LLM introducing multiple social-media-style typos "
+            "and abbreviations throughout (high edit ratio). "
+            "Common patterns: phonetic spelling, text-speak (e.g. '2' for 'to', 'u' for 'you', "
+            "'frm' for 'from', 'signz' for 'signs'), casual misspellings across several words. "
+            "Check: (1) multiple words are altered with typos or abbreviations, "
+            "(2) the claim still conveys the same core meaning even if messy, "
+            "(3) the style reads like a hasty social media post."
         ),
         "expect_preserved": True,
-    },
-}
-
-# ── Structured output schema ──────────────────────────────────────────────────
-#
-# Passed to LM Studio as response_format — the model is constrained to produce
-# exactly this shape, so no JSON parsing hacks or markdown stripping needed.
-
-RESPONSE_SCHEMA = {
-    "type": "json_schema",
-    "json_schema": {
-        "name": "verification_result",
-        "strict": True,
-        "schema": {
-            "type": "object",
-            "properties": {
-                "perturbation_applied": {
-                    "type": "boolean",
-                    "description": (
-                        "True if the specified transformation is clearly present in the perturbed text. "
-                        "False if the texts are identical or the transformation is absent."
-                    ),
-                },
-                "meaning_preserved": {
-                    "type": "boolean",
-                    "description": (
-                        "True if the core factual claim is unchanged between original and perturbed. "
-                        "False if a factual element (entity, date, qualifier, implication) has shifted."
-                    ),
-                },
-                "verified": {
-                    "type": "boolean",
-                    "description": (
-                        "True if perturbation_applied=true AND meaning_preserved matches "
-                        "what is expected for this perturbation type (stated in the criteria)."
-                    ),
-                },
-                "reasoning": {
-                    "type": "string",
-                    "description": (
-                        "One or two sentences explaining the verdict. "
-                        "Be specific: cite which character was substituted, which qualifier was removed, "
-                        "what the emoji is, which date changed, etc."
-                    ),
-                },
-            },
-            "required": ["perturbation_applied", "meaning_preserved", "verified", "reasoning"],
-            "additionalProperties": False,
-        },
     },
 }
 
@@ -406,7 +361,10 @@ You will receive:
 - The perturbed claim text
 - The perturbation type and its specific verification criteria
 
-Evaluate carefully and fill in all four fields.
+Respond with a JSON object containing exactly these three keys:
+  perturbation_applied  (boolean) — was the perturbation actually applied?
+  meaning_preserved     (boolean) — is the core factual meaning preserved?
+  verified              (boolean) — true only if both criteria are met as expected
 
 Rules:
 - If the original and perturbed texts are identical, perturbation_applied must be false.
@@ -470,9 +428,6 @@ def call_lm_studio(client: OpenAI, user_prompt: str, debug: bool = False) -> dic
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": user_prompt},
         ],
-        temperature=0.0,
-        max_tokens=400,
-        response_format=RESPONSE_SCHEMA,
     )
 
     msg = response.choices[0].message
@@ -520,7 +475,7 @@ def process(dry_run: bool, limit: int | None):
 
     # Prepare output file (append if checkpoint exists, write fresh otherwise)
     fieldnames = list(all_rows[0].keys()) + [
-        "perturbation_applied", "meaning_preserved", "verified", "reasoning", "verify_error"
+        "perturbation_applied", "meaning_preserved", "verified", "verify_error"
     ]
     output_mode = "a" if (OUTPUT_FILE.exists() and not dry_run and skipped > 0) else "w"
     out_file = None
@@ -550,7 +505,6 @@ def process(dry_run: bool, limit: int | None):
             "perturbation_applied": None,
             "meaning_preserved":    None,
             "verified":             None,
-            "reasoning":            "",
             "verify_error":         "",
         }
 
@@ -559,25 +513,28 @@ def process(dry_run: bool, limit: int | None):
             verdict     = call_lm_studio(client, user_prompt, debug=dry_run)
 
             # Validate required keys
-            for required_key in ("perturbation_applied", "meaning_preserved", "verified", "reasoning"):
+            for required_key in ("perturbation_applied", "meaning_preserved", "verified"):
                 if required_key not in verdict:
                     raise KeyError(f"Model response missing key: '{required_key}'")
 
             # Re-derive 'verified' from our own logic (don't fully trust model's self-assessment)
             meta              = PERTURBATION_META[row["perturbation_name"]]
             expected_preserved = meta["expect_preserved"]
-            recomputed = (
-                bool(verdict["perturbation_applied"]) and
-                (bool(verdict["meaning_preserved"]) == expected_preserved)
-            )
+            if expected_preserved is None:
+                # neutral: only check that the perturbation was applied
+                recomputed = bool(verdict["perturbation_applied"])
+            else:
+                recomputed = (
+                    bool(verdict["perturbation_applied"]) and
+                    (bool(verdict["meaning_preserved"]) == expected_preserved)
+                )
             if recomputed != verdict["verified"]:
                 verdict["verified"] = recomputed  # override with ground-truth logic
 
             result.update(verdict)
 
             status = "✓ PASS" if verdict["verified"] else "✗ FAIL"
-            short_reason = str(verdict["reasoning"])[:90]
-            print(f"{status} | {short_reason}")
+            print(status)
 
         except json.JSONDecodeError as e:
             result["verify_error"] = f"JSON parse error: {e}"
@@ -599,7 +556,6 @@ def process(dry_run: bool, limit: int | None):
             print(f"         → perturbation_applied={result['perturbation_applied']}, "
                   f"meaning_preserved={result['meaning_preserved']}, "
                   f"verified={result['verified']}")
-            print(f"         → reasoning: {result['reasoning']}")
             if result["verify_error"]:
                 print(f"         → error: {result['verify_error']}")
             print()

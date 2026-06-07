@@ -17,8 +17,34 @@ def _get_client():
     global _client
     if _client is None:
         from openai import OpenAI
-        _client = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key=LM_STUDIO_API_KEY)
+        _client = OpenAI(
+            base_url=LM_STUDIO_BASE_URL,
+            api_key=LM_STUDIO_API_KEY,
+            timeout=60.0,        # fail fast instead of hanging indefinitely
+        )
     return _client
+
+
+def check_connection() -> tuple[bool, str]:
+    """Ping LM Studio and return (ok, message).  Call this at script startup."""
+    try:
+        client = _get_client()
+        models = client.models.list()
+        names = [m.id for m in models.data]
+        if not names:
+            return False, "LM Studio is reachable but no model is loaded."
+        if MODEL_NAME not in names:
+            return False, (
+                f"Connected to LM Studio, but model '{MODEL_NAME}' is not loaded.\n"
+                f"  Available: {names}"
+            )
+        return True, f"LM Studio OK — model '{MODEL_NAME}' is loaded."
+    except Exception as exc:
+        return False, (
+            f"Cannot reach LM Studio at {LM_STUDIO_BASE_URL}.\n"
+            f"  Error: {exc}\n"
+            f"  Make sure LM Studio is running and '{MODEL_NAME}' is loaded."
+        )
 
 # ── llm helper ────────────────────────────────────────────────────────────────
 
@@ -28,7 +54,7 @@ def _llm(instruction: str, text: str) -> str:
         model=MODEL_NAME,
         messages=[
             {"role": "system", "content": SYSTEM},
-            {"role": "user",   "content": f"{instruction}\n\n{text}"},
+            {"role": "user",   "content": f"{instruction}\n\n---\nINPUT TEXT (this is the complete text to transform — it may contain quotes, dialogue, or multiple sentences; apply the perturbation to the entire text, not just one part of it):\n{text}"},
         ],
     )
     return json.loads(resp.choices[0].message.content)["perturbed_text"]
@@ -43,8 +69,26 @@ def _apply_llm(name: str, lang: str, text: str, section: str = "perturbations") 
 _DISRUPTIVE_EMOJIS = ["😱", "🚨", "⚠️", "🔥", "💥", "❗", "🛑", "😤"]
 
 _HOMOGLYPH_MAP = {
+    # Latin → Cyrillic lookalikes (works for all Latin-script languages)
     "a": "а", "e": "е", "o": "о", "p": "р",
     "c": "с", "x": "х", "y": "у", "i": "і",
+    # Arabic confusable pairs (within-script visual similarity)
+    "ي": "ى",   # ya  ↔ alef maqsura (identical without dots)
+    "ه": "ة",   # ha  ↔ ta marbuta   (similar shape)
+    "و": "ﻭ",   # waw ↔ presentation form
+    "ا": "ﺍ",   # alef ↔ alef isolated form
+    "ب": "ت",   # ba  ↔ ta (same base shape, different dots)
+    "ن": "ي",   # nun ↔ ya (similar curve)
+    # Chinese visually similar pairs (simplified ↔ lookalike)
+    "人": "入", "土": "士", "己": "已", "末": "未",
+    "干": "于", "大": "太", "日": "目", "力": "刀",
+    "田": "由", "口": "囗",
+    # Devanagari / Hindi visually similar pairs
+    "म": "भ", "ग": "प", "ह": "ब", "क": "ख",
+    "ण": "न", "ध": "घ", "थ": "ध",
+    # Malayalam visually similar pairs
+    "ര": "ദ", "ക": "ഥ", "ജ": "ഞ", "ന": "ഩ",
+    "ല": "ള", "പ": "ഫ",
 }
 
 _LEET_MAP = {
@@ -53,9 +97,19 @@ _LEET_MAP = {
     "s": "5", "t": "7", "l": "1", "g": "9",
     # Arabic (Arabizi — established internet transliteration)
     "ع": "3", "ح": "7", "ق": "9", "خ": "5", "ء": "2",
+    "ز": "7", "ص": "9", "ط": "6", "غ": "3",
     # Chinese number-character substitutions (internet slang)
     "一": "1", "二": "2", "三": "3", "四": "4", "五": "5",
     "六": "6", "七": "7", "八": "8", "九": "9", "零": "0",
+    # Devanagari / Hindi (numeral-shape substitutions)
+    "ए": "3",   # e-vowel ↔ 3
+    "ओ": "0",   # o-vowel ↔ 0
+    "इ": "1",   # i-vowel ↔ 1
+    "अ": "4",   # a-vowel ↔ 4
+    # Malayalam (numeral-shape substitutions)
+    "ഒ": "0",   # o ↔ 0
+    "ഇ": "1",   # i ↔ 1
+    "ഏ": "3",   # e ↔ 3
 }
 
 # OCR: visually similar character confusions, keyed by original char
@@ -141,31 +195,6 @@ def _back_translate(text: str, pivot: str, lang: str = "EN") -> str:
     mid = GoogleTranslator(source=src, target=pivot).translate(text)
     return GoogleTranslator(source=pivot, target=src).translate(mid)
 
-# ── paper perturbation rule-based implementations (EN only) ──────────────────
-
-def _introduce_typos(text: str, n: int) -> str:
-    """Introduce n character-level typos via insert / delete / substitute / transpose."""
-    words = text.split()
-    eligible = [i for i, w in enumerate(words) if len(w) > 3 and w.isalpha()]
-    targets = random.sample(eligible, min(n, len(eligible)))
-    for wi in targets:
-        word = list(words[wi])
-        op = random.choice(["insert", "delete", "substitute", "transpose"])
-        if op == "insert":
-            pos = random.randint(0, len(word))
-            word.insert(pos, random.choice("abcdefghijklmnopqrstuvwxyz"))
-        elif op == "delete" and len(word) > 2:
-            word.pop(random.randint(0, len(word) - 1))
-        elif op == "substitute":
-            pos = random.randint(0, len(word) - 1)
-            word[pos] = random.choice("abcdefghijklmnopqrstuvwxyz")
-        elif op == "transpose" and len(word) > 1:
-            pos = random.randint(0, len(word) - 2)
-            word[pos], word[pos + 1] = word[pos + 1], word[pos]
-        words[wi] = "".join(word)
-    return " ".join(words)
-
-
 # ── dispatcher ────────────────────────────────────────────────────────────────
 
 _LLM_PERTURBATIONS = [
@@ -184,11 +213,14 @@ _RULE_PERTURBATIONS = {
     "A3_ocr_artifacts":       lambda text, _:    _ocr_artifacts(text),
     "C1_homoglyphs":          lambda text, _:    _homoglyphs(text),
     "C2_leetspeak":           lambda text, _:    _leetspeak(text),
-    "D3_back_translation_de": lambda text, lang: _back_translate(text, "de", lang),
-    "D3_back_translation_es": lambda text, lang: _back_translate(text, "es", lang),
+    "D3_back_translation_it": lambda text, lang: _back_translate(text, "it", lang),
+    "D3_back_translation_ru": lambda text, lang: _back_translate(text, "ru", lang),
 }
 
 # ── paper perturbations (EN only) ─────────────────────────────────────────────
+# Prompts sourced from: https://github.com/JabezNzomo99/claim-matching-robustness
+# Typos are LLM-based (matching the paper) — the paper uses social-media-style
+# abbreviations and phonetic spelling, not simple character-level mutations.
 
 _PAPER_LLM_PERTURBATIONS = [
     "P_negation_low",
@@ -201,12 +233,11 @@ _PAPER_LLM_PERTURBATIONS = [
     "P_dialect_jamaican",
     "P_dialect_pidgin",
     "P_dialect_singlish",
+    "P_typos_low",
+    "P_typos_high",
 ]
 
-_PAPER_RULE_PERTURBATIONS = {
-    "P_typos_low":  lambda text, _: _introduce_typos(text, 1),
-    "P_typos_high": lambda text, _: _introduce_typos(text, 3),
-}
+_PAPER_RULE_PERTURBATIONS: dict = {}   # all paper perturbations are now LLM-based
 
 
 def perturb_all(text: str, lang: str = "EN") -> dict[str, str]:

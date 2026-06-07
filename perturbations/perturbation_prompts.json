@@ -1,5 +1,5 @@
 {
-  "system_prompt": "You are a text perturbation engine for a multilingual NLP research pipeline. Apply exactly the perturbation described in the user message. If the perturbation cannot be meaningfully applied, place the original text unchanged in the output field.",
+  "system_prompt": "You are a text perturbation engine for a multilingual NLP research pipeline. Apply exactly the perturbation described in the user message. If the perturbation cannot be meaningfully applied, place the original text unchanged in the output field. Output only the perturbed text — no explanations, no annotations, no markdown formatting. Never wrap words in ** or any other markdown syntax. Always return the COMPLETE INPUT TEXT with the perturbation applied — never truncate, shorten, or omit any part of the original text.",
   "perturbations": {
     "A1_emoji_relevant": {
       "type": "SURFACE",
@@ -109,43 +109,51 @@
   "paper_perturbations": {
     "P_negation_low": {
       "type": "SEMANTIC",
-      "EN": "Add a single negation to this claim so that it asserts the opposite of the original. Insert 'not', 'never', or an equivalent negation word at the most natural grammatical position. The result must be a fluent English sentence. Do not change any other words."
+      "EN": "You are now a social media user tasked with rewriting a given claim by negating it with minimal edits. Your task: 1. Identify the main claim. 2. Negate it by introducing as minimal edits as possible — add 'not', 'never', or an equivalent negation at the most natural grammatical position. Ensure that: 1. The negated claim contains all the information from the original. 2. The negated claim is grammatically correct and maintains coherence. Example: Input: 'It is safe for individuals infected with COVID-19 to go to work.' Output: 'It is not safe for individuals infected with COVID-19 to go to work.'"
     },
     "P_negation_high": {
       "type": "SEMANTIC",
-      "EN": "Apply a double negation to this claim. First negate the core assertion, then wrap the whole thing in a denial frame. The output must follow this structure: 'It is not true that [single-negated version of the claim].' The result must be fluent English."
+      "EN": "You are now a social media user tasked with rewriting a given claim by double-negating it with minimal edits. Your task: 1. Identify the main claim. 2. Double negate it by: first negating the core assertion, then wrapping the whole thing in a denial frame. Ensure that: 1. The negated claim contains all the information from the original. 2. The negated claim is grammatically correct and maintains coherence. Example: Input: 'It is safe for individuals infected with COVID-19 to go to work.' Output: 'It is not false that it is safe for individuals infected with COVID-19 to go to work.'"
     },
     "P_entity_low": {
       "type": "SEMANTIC",
-      "EN": "Identify the single most prominent named entity in this claim (person, organisation, or location) and replace it with a different but plausible entity of the same type (e.g. replace one university with another university, one politician with another politician, one country with a neighbouring country). Keep all other words exactly as written."
+      "EN": "You are now a social media user tasked with rewriting a given claim by substituting one named entity only. Your task: Rewrite the claim by changing only one named entity (e.g., a person, location, organisation, or date) to a similar or related entity of the same type (e.g., a synonym, nickname, or alternative). Focus your substitution on the named entity and keep the rest of the sentence structure as similar as possible. Ensure that: 1. You only change one named entity and keep the rest of the claim unchanged. 2. The rewritten claim must convey a plausible but different version of the original. 3. The rewritten claim should read naturally and not appear suspiciously altered. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'The U.S. leader signed an executive order today banning the term China virus.'"
     },
     "P_entity_high": {
       "type": "SEMANTIC",
-      "EN": "Identify every named entity in this claim (persons, organisations, locations, dates) and replace each one with a different but plausible entity of the same type. Keep all non-entity words exactly as written."
+      "EN": "You are now a social media user tasked with rewriting a given claim by substituting all named entities. Your task: Rewrite the claim by changing all named entities (persons, organisations, locations, dates) to similar or related entities of the same type (e.g., synonyms, nicknames, alternative places). Keep all non-entity words exactly as written. Ensure that: 1. You change every named entity but keep all other words unchanged. 2. The rewritten claim must convey a plausible but different version of the original. 3. The rewritten claim should read naturally and not appear suspiciously altered. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'Sleepy Joe signed an executive order recently banning the term Kung Flu.'"
     },
     "P_llm_rewrite_low": {
       "type": "SURFACE",
-      "EN": "Rewrite this claim as a paraphrase that changes as few words as possible. You must change at least 1 word — do not return the original text. Swap one or two words for close synonyms or restructure one short phrase while keeping everything else identical. Preserve the exact meaning and all factual content."
+      "EN": "You are now a social media user tasked with rewriting a given claim while introducing as minimal edits as possible. Rewrite the claim by swapping one or two words for close synonyms or making minor phrasing changes. Ensure that: 1. The rewritten claim must convey the same main claim as the original. 2. The rewritten claim should read naturally and not appear suspiciously altered. 3. You must change at least one word — do not return the original text unchanged. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'President Biden officially signed an executive order today prohibiting the use of the term China virus.'"
     },
     "P_llm_rewrite_high": {
       "type": "SURFACE",
-      "EN": "Rewrite this claim using as many word changes as possible while fully preserving the meaning and all factual content. Aim for maximum Levenshtein distance from the original — use different vocabulary, restructure the sentence, change word order. The rewritten claim must convey exactly the same information."
+      "EN": "You are now a social media user tasked with rewriting a given claim using as many word changes as possible while fully preserving the meaning. Use different vocabulary, restructure the sentence, and change word order to maximise edit distance from the original. Ensure that: 1. The rewritten claim must convey exactly the same main claim as the original. 2. The rewritten claim should read naturally and not appear suspiciously altered. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'The term China virus has been banned under a new executive order signed by Biden today.'"
     },
     "P_dialect_aae": {
       "type": "SURFACE",
-      "EN": "Rewrite this claim in African American English (AAVE). Apply characteristic AAVE grammatical and lexical features such as habitual 'be', copula deletion, double negatives, and idiomatic vocabulary. Preserve all factual content exactly."
+      "EN": "You are now a social media user tasked with rewriting a given claim in African American Vernacular English (AAVE). Rewrite the claim using characteristic AAVE features such as habitual 'be', copula deletion, double negatives, and idiomatic vocabulary. Ensure that: 1. The rewritten claim must convey the same main claim as the original. 2. The rewritten claim should feel like something a typical social media user might write. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'Biden done signed an order today, no more sayin\\' China virus.'"
     },
     "P_dialect_jamaican": {
       "type": "SURFACE",
-      "EN": "Rewrite this claim in Jamaican Patois (Jamaican Creole). Apply characteristic Patois features such as 'mi' for 'I/me', 'dem' for 'them/those', 'nuh' for negation, 'fi' for 'to/for', and typical Jamaican lexical items. Preserve all factual content exactly."
+      "EN": "You are now a social media user tasked with rewriting a given claim in Jamaican Patois (Jamaican Creole). Rewrite the claim using characteristic Patois features such as 'mi' for 'I/me', 'dem' for 'them/those', 'nuh' for negation, 'fi' for 'to/for', and typical Jamaican lexical items. Ensure that: 1. The rewritten claim must convey the same main claim as the original. 2. The rewritten claim should feel like something a typical social media user might write. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'Biden sign one order today, fi stop di use a China virus.'"
     },
     "P_dialect_pidgin": {
       "type": "SURFACE",
-      "EN": "Rewrite this claim in Nigerian Pidgin English. Apply characteristic Naija Pidgin features such as 'e' for 'he/she/it', 'dem' for 'they', 'dey' for 'is/are/am', 'no' for negation, 'wey' as a relative pronoun, and typical Pidgin lexical patterns. Preserve all factual content exactly."
+      "EN": "You are now a social media user tasked with rewriting a given claim in Nigerian Pidgin English (Naija). Rewrite the claim using characteristic Pidgin features such as 'e' for 'he/she/it', 'dem' for 'they', 'dey' for 'is/are', 'no' for negation, and 'wey' as a relative pronoun. Ensure that: 1. The rewritten claim must convey the same main claim as the original. 2. The rewritten claim should feel like something a typical social media user might write. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'Biden don sign executive order today, e no go dey call am China virus again.'"
     },
     "P_dialect_singlish": {
       "type": "SURFACE",
-      "EN": "Rewrite this claim in Singlish (Singaporean English). Apply characteristic Singlish features such as discourse particles ('lah', 'leh', 'meh', 'lor', 'sia'), topic-fronting, copula omission, and typical Singlish expressions. Preserve all factual content exactly."
+      "EN": "You are now a social media user tasked with rewriting a given claim in Singlish (Singaporean English). Rewrite the claim using characteristic Singlish features such as discourse particles ('lah', 'leh', 'meh', 'lor', 'sia'), topic-fronting, and copula omission. Ensure that: 1. The rewritten claim must convey the same main claim as the original. 2. The rewritten claim should feel like something a typical social media user might write. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'Wah, Biden just sign order today, cannot call China virus liao.'"
+    },
+    "P_typos_low": {
+      "type": "SURFACE",
+      "EN": "You are now a social media user tasked with rewriting a given claim by introducing a small number of common typos and social media abbreviations. Introduce 1–2 subtle changes: swap a letter, use a common abbreviation (e.g. '2' for 'to', 'u' for 'you'), or add a minor spelling error. Keep the overall edit ratio low — the rewritten claim should still be easily readable. Ensure that: 1. The rewritten claim must convey the same main claim as the original. 2. The rewritten claim should feel like something a typical social media user might hastily type. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'Biden sighned EO banning da term China virus.'"
+    },
+    "P_typos_high": {
+      "type": "SURFACE",
+      "EN": "You are now a social media user tasked with rewriting a given claim by introducing multiple typos and social media abbreviations throughout. Use common character swaps, phonetic spelling, text-speak abbreviations (e.g. '2' for 'to/too', 'u' for 'you', 'frm' for 'from', 'signz' for 'signs'), and casual misspellings across several words. Aim for a high edit ratio — many words should be changed. Ensure that: 1. The rewritten claim must still convey the same main claim as the original (even if messy). 2. The rewritten claim should feel like something a typical social media user might hastily type. Example: Input: 'Biden signed an executive order today banning the term China virus.' Output: 'Bden signz exe order 2day banning China virus!!'"
     }
   }
 }

@@ -179,6 +179,7 @@ def run_perturber(
     workers: int = 1,
     delay: float = 0.5,
     dry_run: bool = False,
+    sample_per_lang: int | None = None,
 ) -> None:
     """Main processing loop shared by perturb_multiclaim.py and perturb_posts.py.
 
@@ -189,15 +190,18 @@ def run_perturber(
     All perturbations for one claim are written atomically before moving on.
 
     Args:
-        input_file:  Path to preprocessed CSV (must have 'pipeline_lang' column).
-        output_file: Path to write perturbed output CSV.
-        id_col:      Name of the unique-ID column ('NID' or 'post_id').
-        text_col:    Name of the original-text column ('Claim' or 'post_body').
-        limit:       If set, process at most this many input rows.
-        workers:     Thread-pool size. With a single-GPU local LLM, >1 mostly
-                     helps parallelise back-translation and HTTP overhead.
-        delay:       Seconds to sleep between LLM calls (per perturbation).
-        dry_run:     Process the first 2 rows, print output, write nothing.
+        input_file:      Path to preprocessed CSV (must have 'pipeline_lang' column).
+        output_file:     Path to write perturbed output CSV.
+        id_col:          Name of the unique-ID column ('NID' or 'post_id').
+        text_col:        Name of the original-text column ('Claim' or 'post_body').
+        limit:           If set, process at most this many input rows.
+        workers:         Thread-pool size. With a single-GPU local LLM, >1 mostly
+                         helps parallelise back-translation and HTTP overhead.
+        delay:           Seconds to sleep between LLM calls (per perturbation).
+        dry_run:         Process the first 2 rows, print output, write nothing.
+        sample_per_lang: If set, take at most this many rows per pipeline language.
+                         Use this to generate small balanced test sets
+                         (e.g. --sample-per-lang 10).
     """
     # ── load input ────────────────────────────────────────────────────────────
     with open(input_file, newline="", encoding="utf-8-sig") as f:
@@ -205,6 +209,21 @@ def run_perturber(
 
     if limit:
         all_rows = all_rows[:limit]
+
+    # ── per-language sampling (test-set mode) ─────────────────────────────────
+    if sample_per_lang:
+        from collections import defaultdict
+        buckets: dict = defaultdict(list)
+        for r in all_rows:
+            buckets[r["pipeline_lang"]].append(r)
+        all_rows = []
+        for lang_rows in buckets.values():
+            all_rows.extend(lang_rows[:sample_per_lang])
+        all_rows.sort(key=lambda r: int(r[id_col]))
+        lang_counts = {lang: min(len(rows), sample_per_lang)
+                       for lang, rows in buckets.items()}
+        print(f"Sample mode: {sample_per_lang} rows/lang → "
+              + ", ".join(f"{l}={n}" for l, n in sorted(lang_counts.items())))
     if dry_run:
         all_rows = all_rows[:2]
 
@@ -238,6 +257,17 @@ def run_perturber(
         print("Nothing to do.")
         return
 
+    # ── LM Studio connection check ────────────────────────────────────────────
+    # Skip if only rule-based perturbations are in play (unlikely but possible).
+    from perturbations import check_connection
+    ok, msg = check_connection()
+    if ok:
+        print(f"✓ {msg}")
+    else:
+        print(f"\n✗ {msg}\n")
+        sys.exit(1)
+    print()
+
     # ── open output file ──────────────────────────────────────────────────────
     out_file = None
     writer   = None
@@ -248,6 +278,7 @@ def run_perturber(
         writer   = csv.DictWriter(out_file, fieldnames=fieldnames, extrasaction="ignore")
         if mode == "w":
             writer.writeheader()
+            out_file.flush()   # header visible immediately
 
     write_lock = threading.Lock()
     processed  = 0
@@ -318,7 +349,9 @@ def run_perturber(
         print(sep)
         print()
 
-    # ── per-claim worker ──────────────────────────────────────────────────────
+    # ── per-claim worker ─────────────────────────────────────────────────────
+    # Writes each perturbation row immediately rather than batching per claim,
+    # so progress is visible in the output file after every single perturbation.
     def process_claim(row: dict) -> list[dict]:
         text = row[text_col]
         lang = row["pipeline_lang"]
@@ -327,14 +360,20 @@ def run_perturber(
         for name in names:
             perturbed, error = perturb_one(name, text, lang)
             changed = bool(perturbed and perturbed != text and not error)
-            out_rows.append({
+            out_row = {
                 **row,
                 "perturbation_name": name,
                 "family":            get_family(name),
                 "perturbed_text":    perturbed,
                 "changed":           str(changed),
                 "error":             error,
-            })
+            }
+            out_rows.append(out_row)
+            # write immediately so each row is visible as soon as it's done
+            if not dry_run and writer:
+                with write_lock:
+                    writer.writerow(out_row)
+                    out_file.flush()
             if is_llm_perturbation(name) and delay > 0:
                 time.sleep(delay)
         return out_rows
@@ -353,7 +392,7 @@ def run_perturber(
                     error_ids.append(row_id)
                     continue
 
-                results = future.result()
+                results = future.result()   # rows already written inside process_claim
 
                 if dry_run:
                     for r in results:
@@ -362,10 +401,6 @@ def run_perturber(
                         if r["error"]:
                             print(f"    ERROR: {r['error']}")
                     print()
-                else:
-                    with write_lock:
-                        writer.writerows(results)
-                        out_file.flush()
 
                 # ── update counters (main thread only — no lock needed) ────
                 processed += 1

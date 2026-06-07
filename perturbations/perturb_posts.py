@@ -51,15 +51,19 @@ def main() -> None:
                         help=f"Preprocessed input CSV (default: {DEFAULT_INPUT})")
     parser.add_argument("--output",  type=Path, default=DEFAULT_OUTPUT,
                         help=f"Perturbed output CSV (default: {DEFAULT_OUTPUT})")
-    parser.add_argument("--limit",   type=int,  default=None,
+    parser.add_argument("--limit",           type=int,   default=None,
                         help="Process at most N input rows (for testing).")
-    parser.add_argument("--workers", type=int,  default=1,
+    parser.add_argument("--sample-per-lang", type=int,   default=None,
+                        metavar="N",
+                        help="Take at most N rows per language — generates a small "
+                             "balanced test set (e.g. --sample-per-lang 10).")
+    parser.add_argument("--workers",         type=int,   default=1,
                         help="Thread-pool size. Default 1 (sequential). "
                              "Note: with a single-GPU local LLM, >1 mainly helps "
                              "parallelise back-translation and HTTP overhead.")
-    parser.add_argument("--delay",   type=float, default=0.5,
+    parser.add_argument("--delay",           type=float, default=0.5,
                         help="Seconds between LLM calls per post (default 0.5).")
-    parser.add_argument("--dry-run", action="store_true",
+    parser.add_argument("--dry-run",         action="store_true",
                         help="Process first 2 posts, print output, write nothing.")
     args = parser.parse_args()
 
@@ -74,17 +78,20 @@ def main() -> None:
     print(f"Delay   : {args.delay}s per LLM call")
     if args.limit:
         print(f"Limit   : {args.limit} rows")
+    if args.sample_per_lang:
+        print(f"Sample  : {args.sample_per_lang} rows/language (test-set mode)")
     print()
 
     run_perturber(
-        input_file  = args.input,
-        output_file = args.output,
-        id_col      = "post_id",
-        text_col    = "post_body",
-        limit       = args.limit,
-        workers     = args.workers,
-        delay       = args.delay,
-        dry_run     = args.dry_run,
+        input_file      = args.input,
+        output_file     = args.output,
+        id_col          = "post_id",
+        text_col        = "post_body",
+        limit           = args.limit,
+        workers         = args.workers,
+        delay           = args.delay,
+        dry_run         = args.dry_run,
+        sample_per_lang = args.sample_per_lang,
     )
 
 

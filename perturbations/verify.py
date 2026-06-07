@@ -9,7 +9,6 @@ a verified CSV with five additional columns:
     perturbation_applied  (bool) — was the transformation visibly applied?
     meaning_preserved     (bool) — is the core factual meaning unchanged?
     verified              (bool) — perturbation_applied AND meaning matches expectation
-    reasoning             (str)  — model's one-sentence explanation
     verify_error          (str)  — non-empty if the call failed
 
 The 'verified' flag is always re-derived from our own logic — we do not trust
@@ -59,7 +58,6 @@ sys.path.insert(0, str(SCRIPT_DIR))
 
 from verify_perturbations import (  # type: ignore[import]
     PERTURBATION_META,
-    RESPONSE_SCHEMA,
     SYSTEM_PROMPT,
     LM_STUDIO_BASE_URL,
     LM_STUDIO_API_KEY,
@@ -125,9 +123,6 @@ def call_lm_studio(client: OpenAI, user_prompt: str) -> dict:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": user_prompt},
         ],
-        temperature=0.0,
-        max_tokens=400,
-        response_format=RESPONSE_SCHEMA,
     )
     msg = response.choices[0].message
     raw = msg.content or getattr(msg, "reasoning_content", "") or ""
@@ -142,7 +137,6 @@ def verify_row(row: dict, text_col: str, client: OpenAI, delay: float) -> dict:
         "perturbation_applied": None,
         "meaning_preserved":    None,
         "verified":             None,
-        "reasoning":            "",
         "verify_error":         "",
     }
 
@@ -158,14 +152,13 @@ def verify_row(row: dict, text_col: str, client: OpenAI, delay: float) -> dict:
         result["perturbation_applied"] = False
         result["meaning_preserved"]    = True
         result["verified"]             = False
-        result["reasoning"]            = "Skipped — perturbed text is empty."
         return result
 
     try:
         user_prompt = build_prompt(row, text_col)
         verdict     = call_lm_studio(client, user_prompt)
 
-        for key in ("perturbation_applied", "meaning_preserved", "verified", "reasoning"):
+        for key in ("perturbation_applied", "meaning_preserved", "verified"):
             if key not in verdict:
                 raise KeyError(f"Model response missing key: {key!r}")
 
@@ -261,7 +254,7 @@ def main() -> None:
     # ── output schema ─────────────────────────────────────────────────────────
     verify_cols = [
         "perturbation_applied", "meaning_preserved",
-        "verified", "reasoning", "verify_error",
+        "verified", "verify_error",
     ]
     out_fieldnames = fieldnames + verify_cols
 
@@ -335,7 +328,6 @@ def main() -> None:
                         f"    applied={verdict['perturbation_applied']} "
                         f"preserved={verdict['meaning_preserved']} "
                         f"verified={verdict['verified']}\n"
-                        f"    {verdict['reasoning'][:100]}"
                         + (f"\n    ERROR: {verdict['verify_error']}" if verdict["verify_error"] else "")
                     )
                 else:
