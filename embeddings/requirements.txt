@@ -1,0 +1,31 @@
+# Embeddings pipeline — Python 3.10+  (H200 / CUDA 12 only)
+#
+# Setup (once, from repo root):
+#   pip install torch --index-url https://download.pytorch.org/whl/cu124
+#   pip install -r embeddings/requirements.txt
+#   pip uninstall faiss-cpu -y 2>/dev/null; pip install faiss-gpu
+#
+# Run:
+#   bash embeddings/run_gpu_pipelines.sh
+#   python embeddings/pipeline_multiclaimnet.py --models me5
+
+sentence-transformers>=5.4.0
+transformers>=4.51.0
+accelerate>=0.30.0
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.66.0
+scikit-learn>=1.3.0
+faiss-gpu>=1.7.4
+
+# NOTE on sentence-transformers>=5.4.0: the version the pipelines were run
+# against. Pinned as a floor rather than exactly, since the 7-8B decoder-based
+# bi-encoders (Qwen3-Embedding-8B, llama-embed-nemotron-8b) rely on loader
+# behaviour from the 5.x line.
+#
+# NOTE on instructor-large: known incompatibility between the INSTRUCTOR
+# instruction-exclusion-from-pooling logic and sentence-transformers >2.2.2
+# (https://github.com/UKPLab/sentence-transformers/issues/2567). We're now
+# even further past that ceiling (>=5.4.0), so instructor-large may fail to
+# load — that's expected and being tested deliberately, not a bug to "fix"
+# here. If it breaks, see docs/pipeline_methodology.md.

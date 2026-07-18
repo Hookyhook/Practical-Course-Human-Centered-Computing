@@ -1,0 +1,2 @@
+# Verification pipeline (verify.py)
+openai>=1.40.0
