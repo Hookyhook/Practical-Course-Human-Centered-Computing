@@ -262,7 +262,7 @@ Prepends exactly one short loaded presupposition frame that smuggles in an assum
 
 ## 5. Paper Perturbations (English Only)
 
-In addition to the core 14 perturbation types, we apply 12 perturbation types from the paper *"Claim Matching Beyond English"* (Nzomo et al., 2023), sourced from the [claim-matching-robustness repository](https://github.com/JabezNzomo99/claim-matching-robustness). These are applied to English posts only and use LLM generation with the paper's original prompt formulations.
+In addition to the core 14 perturbation types, we apply 12 perturbation types from the base paper *"When Claims Evolve: Evaluating and Enhancing the Robustness of Embedding Models Against Misinformation Edits"* (Magomere et al., 2025), sourced from its official [claim-matching-robustness repository](https://github.com/JabezNzomo99/claim-matching-robustness). These are applied to English posts only and use LLM generation with the paper's original prompt formulations.
 
 All 12 paper perturbations are LLM-based. An earlier design used rule-based typo generation, but the paper's original approach uses LLM-generated social-media-style abbreviations and phonetic spelling rather than simple character mutations, so the implementation was updated to match.
 
@@ -328,8 +328,8 @@ Introduces multiple typos, phonetic spelling, and text-speak abbreviations throu
 
 All LLM-based perturbations call a locally hosted model via LM Studio's OpenAI-compatible API.
 
-- **Model:** Qwen3-35B-A3B Q4_K_M (quantized)
-- **Endpoint:** `http://localhost:1234/v1`
+- **Model:** Qwen3.6-35B-A3B (unsloth NVFP4 quantization, `unsloth/Qwen3.6-35B-A3B-NVFP4`)
+- **Endpoint:** `http://localhost:8000/v1`
 - **Timeout:** 60 seconds per call
 - **Response format:** JSON with a single key `perturbed_text`
 
