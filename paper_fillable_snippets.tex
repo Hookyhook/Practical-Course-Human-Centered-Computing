@@ -1,0 +1,194 @@
+% =====================================================================
+%  Fillable FIXME material, drafted from the evaluated dataset.
+%  Source: data/processed/multiclaimnet_verified.csv (Task A),
+%          perturbations/perturbation_prompts.json
+%  Rank slots are left open: per-query gold ranks are not stored by the
+%  pipeline (build_result_rows aggregates to MAP@k per cell).
+% =====================================================================
+
+% ---------------------------------------------------------------------
+% 1. §3.4 -- prompt-version paragraph.  RESOLVED: annotators reviewed the
+%    prompt set used to generate the reported data.  Replaces the old
+%    sentence and removes the \fixme.
+% ---------------------------------------------------------------------
+And the check was carried out on the prompt versions used to generate the
+reported data, so what the annotators saw is what produced the numbers we
+report; the revisions it motivated were applied afterwards and are not
+incorporated into the reported runs.
+
+% NOTE: Appendix A currently states that both the original and the revised
+% prompt set are released.  Only one set (perturbation_prompts.json) is in
+% the repository -- either add the revised set before submission or drop
+% that sentence.
+
+
+% ---------------------------------------------------------------------
+% 2. §3.4 -- annotation counts.  Tallied from the four returned forms
+%    (form_spanish, form_french, form_chinese, form_arabic).
+%    Item count is 155, not 160: the Arabic form omits C3_word_splitting
+%    (7 types x 5 posts = 35), as noted in docs/pipeline_methodology.md.
+%    "Natural?" is a 1-5 scale on the form, not a pass/fail criterion.
+% ---------------------------------------------------------------------
+
+Native or fluent speakers reviewed Spanish, French, Chinese and Arabic,
+covering three scripts. For each language one annotator examined the
+eight model-generated prompts, then judged five source posts under all
+applicable perturbations for whether the edit was applied, whether the
+output was natural on a five-point scale, and whether meaning was handled
+as specified. This gives 155 annotated variants---40 per language except
+Arabic, where word splitting was excluded because it failed to apply to
+every Arabic post---with one annotator per language and no agreement
+statistics, so it is a diagnostic check and not an estimate of verifier
+accuracy.
+
+Of the 150 completed application judgements, 80 items were judged to have
+applied the intended transformation, 23 partially and 47 not; of 149
+completed meaning judgements, 97 handled meaning as specified and 51 did
+not; mean naturalness was $3.3$, with 63 items rated 4 or 5. The four
+languages separate sharply (Table~\ref{tab:human}): Spanish and French
+sit above the mean on all three criteria, Chinese and Arabic below it,
+and Arabic is the weakest on every criterion.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+ & Spanish & French & Chinese & Arabic \\
+\midrule
+Items                & 40 & 40 & 40 & 35 \\
+Applied: yes         & 32 & 22 & 20 &  6 \\
+\quad partially      &  0 &  6 &  4 & 13 \\
+\quad no             &  3 & 12 & 16 & 16 \\
+Naturalness (mean)   & 3.9 & 4.3 & 2.8 & 2.3 \\
+\quad rated $\geq 4$ & 20 & 32 &  8 &  3 \\
+Meaning as specified & 30 & 33 & 26 &  8 \\
+\quad not            &  4 &  7 & 13 & 27 \\
+\bottomrule
+\end{tabular}
+\caption{Human quality check, 155 items across four languages and three
+scripts, one annotator each. Columns do not always sum to the item count:
+the Spanish annotator left 5 application, 11 naturalness and 6 meaning
+cells blank, and the Chinese annotator 4 naturalness and 1 meaning cell.
+Naturalness is a five-point scale.}
+\label{tab:human}
+\end{table}
+
+% Per-perturbation application rate (judged "yes", pooled over the four
+% languages, out of completed judgements) -- available if a reviewer asks:
+%   E2_presupposition      17/20      D2_clickbait_llm      14/20
+%   A2_hashtagification    12/20      B2_temporal_drift     12/20
+%   C3_word_splitting      10/15      A1_emoji_relevant      6/19
+%   B1_qualifier_removal    5/16      A4_stt_artifacts       4/20
+%
+% NOTE: the draft says "160 annotated variants"; the correct figure is 155.
+
+
+% ---------------------------------------------------------------------
+% 3. Appendix C -- dialect rewrites.  Real examples from the evaluated
+%    data, plus a mechanism claim that the data actually supports.
+% ---------------------------------------------------------------------
+
+\begin{table}[t]
+\centering\small
+\fitcol{%
+\begin{tabular}{@{}ll@{}}
+\toprule
+Variant & Text \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{NID 24}} \\
+Original & Biden \& the Dems are coming to your front door to \\
+         & force you to take the [COVID-19] vax \\
+Patois   & Biden an di Dem dem a come a yuh front door fi \\
+         & force yuh tek de COVID-19 vax. \\
+AAE      & Biden an dems finna come to yo front do to force \\
+         & you to take that vax \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{NID 71}} \\
+Original & (James) Comey knew murdered DNC staffer, Seth Rich, \\
+         & was WikiLeaks source \& covered it up for Hillary \\
+Patois   & (James) Comey know Seth Rich, di DNC staffer we dem \\
+         & kill, bin WikiLeaks source an cover it up fi Hillary \\
+AAE      & Comey know that murdered DNC staffer, Seth Rich, was \\
+         & the WikiLeaks source an' cover it up for Hillary. \\
+\bottomrule
+\end{tabular}}
+\caption{Verified dialect rewrites from the evaluated Task~A data.
+Jamaican Patois replaces a larger share of the original tokens
+(\emph{a come a}, \emph{fi}, \emph{tek}, \emph{we dem kill}), whereas the
+African American English rewrites retain most original tokens and change
+morphosyntax (\emph{finna}, bare \emph{know}, \emph{cover}).}
+\label{tab:dialect-examples}
+\end{table}
+
+% Replacement for the mechanism sentence in App. C.  The current wording
+% ("tracks orthographic distance ... whereas AAE rewrites remain close to
+% standard orthography") is NOT supported: mean character-level distance
+% is 0.224 for Patois and 0.228 for AAE, and Singlish is highest (0.272)
+% while being second least damaging.  Token overlap does track the
+% ordering monotonically, over the 3,002 Task~A claims with all four
+% dialects verified:
+%
+%   dialect    degradation(A)   new tokens %   token Jaccard
+%   Patois          10.1            43.4           0.402
+%   Pidgin           4.4            39.2           0.453
+%   Singlish         3.7            33.1           0.483
+%   AAE              2.6            33.4           0.533
+
+The ordering is stable across both tasks and tracks how much of the
+original wording each rewrite replaces rather than how far it departs
+syntactically. Over the $3{,}002$ Task~A claims for which all four
+dialect rewrites verify, mean token overlap with the original falls
+monotonically with degradation (Jaccard $0.53$ for African American
+English, $0.48$ Singlish, $0.45$ Nigerian Pidgin, $0.40$ Jamaican
+Patois), while sentence-level character distance does not order the four
+at all ($0.22$--$0.27$, Patois lowest). Patois rewrites replace $43\%$ of
+tokens with forms absent from the original against $33\%$ for African
+American English (Table~\ref{tab:dialect-examples}). Dialect degradation
+is therefore in the same range as our character-level family and well
+below typos, consistent with these edits acting on the models primarily
+through lexical form.
+
+% Still open in this appendix:
+\fixme{gold-target ranks for the two examples in Table~\ref{tab:dialect-examples}}
+
+
+% ---------------------------------------------------------------------
+% 4. Prompts for release / appendix (verbatim from
+%    perturbations/perturbation_prompts.json, family P, dialect types).
+%    All four share the same Magomere-style frame and worked example.
+% ---------------------------------------------------------------------
+%
+% P_dialect_aae:
+%   "You are now a social media user tasked with rewriting a given claim in
+%    African American Vernacular English (AAVE). Rewrite the claim using
+%    characteristic AAVE features such as habitual 'be', copula deletion,
+%    double negatives, and idiomatic vocabulary. Ensure that: 1. The
+%    rewritten claim must convey the same main claim as the original. 2. The
+%    rewritten claim should feel like something a typical social media user
+%    might write. Example: Input: 'Biden signed an executive order today
+%    banning the term China virus.' Output: 'Biden done signed an order
+%    today, no more sayin' China virus.'"
+%
+% P_dialect_jamaican:
+%   same frame; features "such as 'mi' for 'I/me', 'dem' for 'them/those',
+%   'nuh' for negation, 'fi' for 'to/for', and typical Jamaican lexical
+%   items"; example output: "Biden sign one order today, fi stop di use a
+%   China virus."
+%
+% P_dialect_pidgin:
+%   same frame; features "'e' for 'he/she/it', 'dem' for 'they', 'dey' for
+%   'is/are', 'no' for negation, and 'wey' as a relative pronoun"; example
+%   output: "Biden don sign executive order today, e no go dey call am China
+%   virus again."
+%
+% P_dialect_singlish:
+%   same frame; features "discourse particles ('lah', 'leh', 'meh', 'lor',
+%   'sia'), topic-fronting, and copula omission"; example output: "Wah,
+%   Biden just sign order today, cannot call China virus liao."
+%
+% Observation for §2 (relationship to Magomere): the AAE prompt names
+% morphosyntactic features (habitual be, copula deletion) while the Patois,
+% Pidgin and Singlish prompts name lexical substitutions.  The degradation
+% ordering may therefore partly reflect what the prompts instruct rather
+% than a property of the varieties -- worth one sentence in the ethics
+% caveat.

@@ -1,0 +1,1095 @@
+{
+ "Spanish": [
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2749",
+   "a": null,
+   "n": null,
+   "m": null
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2749",
+   "a": "Yes",
+   "n": "1",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2749",
+   "a": "Yes",
+   "n": null,
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2749",
+   "a": null,
+   "n": null,
+   "m": null
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2749",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2749",
+   "a": "No",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2749",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2749",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2773",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2773",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2773",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2773",
+   "a": null,
+   "n": null,
+   "m": null
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2773",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2773",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2773",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2773",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2780",
+   "a": "Yes",
+   "n": null,
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2780",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2780",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2780",
+   "a": null,
+   "n": null,
+   "m": null
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2780",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2780",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2780",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2780",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2786",
+   "a": "Yes",
+   "n": null,
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2786",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2786",
+   "a": "Yes",
+   "n": "5",
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2786",
+   "a": "No",
+   "n": null,
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2786",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2786",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2786",
+   "a": "Yes",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2786",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2800",
+   "a": "Yes",
+   "n": null,
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2800",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2800",
+   "a": "No",
+   "n": null,
+   "m": null
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2800",
+   "a": null,
+   "n": null,
+   "m": null
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2800",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2800",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2800",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2800",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  }
+ ],
+ "French": [
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2743",
+   "a": "Partially",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2743",
+   "a": "Partially",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2743",
+   "a": "No",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2743",
+   "a": "No",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2743",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2743",
+   "a": "Partially",
+   "n": "4",
+   "m": "No"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2743",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2743",
+   "a": "Yes",
+   "n": "4",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2797",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2797",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2797",
+   "a": "No",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2797",
+   "a": "No",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2797",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2797",
+   "a": "No",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2797",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2797",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2802",
+   "a": "No",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2802",
+   "a": "No",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2802",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2802",
+   "a": "Partially",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2802",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2802",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2802",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2802",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2834",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2834",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2834",
+   "a": "No",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2834",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2834",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2834",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2834",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2834",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2835",
+   "a": "No",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2835",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2835",
+   "a": "No",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2835",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2835",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "2835",
+   "a": "Partially",
+   "n": "5",
+   "m": "No"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2835",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2835",
+   "a": "Yes",
+   "n": "3",
+   "m": "No"
+  }
+ ],
+ "Arabic": [
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2764",
+   "a": "No",
+   "n": "1",
+   "m": "No"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2764",
+   "a": "No",
+   "n": "1",
+   "m": "No"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2764",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2764",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2764",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2764",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2764",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "2766",
+   "a": "No",
+   "n": "3",
+   "m": "No"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "2766",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "2766",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "2766",
+   "a": "No",
+   "n": "3",
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "2766",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "2766",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "2766",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "3874",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "3874",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "3874",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "3874",
+   "a": "Yes",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "3874",
+   "a": "No",
+   "n": "3",
+   "m": "No"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "3874",
+   "a": "Partially",
+   "n": "3",
+   "m": "No"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "3874",
+   "a": "Yes",
+   "n": "1",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "3876",
+   "a": "Partially",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "3876",
+   "a": "Yes",
+   "n": "1",
+   "m": "No"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "3876",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "3876",
+   "a": "No",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "3876",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "3876",
+   "a": "Partially",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "3876",
+   "a": "Yes",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "3883",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "3883",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "3883",
+   "a": "No",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "3883",
+   "a": "Yes",
+   "n": "4",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "3883",
+   "a": "Partially",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "3883",
+   "a": "No",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "3883",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  }
+ ],
+ "Chinese": [
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "3032",
+   "a": "No",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "3032",
+   "a": "Partially",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "3032",
+   "a": "No",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "3032",
+   "a": "No",
+   "n": "3",
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "3032",
+   "a": "Partially",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "3032",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "3032",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "3032",
+   "a": "Yes",
+   "n": "3",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "4481",
+   "a": "No",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "4481",
+   "a": "Yes",
+   "n": null,
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "4481",
+   "a": "No",
+   "n": null,
+   "m": null
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "4481",
+   "a": "Yes",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "4481",
+   "a": "Yes",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "4481",
+   "a": "Yes",
+   "n": "3",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "4481",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "4481",
+   "a": "Yes",
+   "n": null,
+   "m": "Yes"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "4561",
+   "a": "No",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "4561",
+   "a": "No",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "4561",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "4561",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "4561",
+   "a": "No",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "4561",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "4561",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "4561",
+   "a": "Yes",
+   "n": "1",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "4688",
+   "a": "No",
+   "n": null,
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "4688",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "4688",
+   "a": "No",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "4688",
+   "a": "No",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "4688",
+   "a": "No",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "4688",
+   "a": "Yes",
+   "n": "2",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "4688",
+   "a": "Yes",
+   "n": "1",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "4688",
+   "a": "Yes",
+   "n": "2",
+   "m": "No"
+  },
+  {
+   "pert": "A1_emoji_relevant",
+   "post": "4690",
+   "a": "No",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A2_hashtagification",
+   "post": "4690",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "A4_stt_artifacts",
+   "post": "4690",
+   "a": "Partially",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "B1_qualifier_removal",
+   "post": "4690",
+   "a": "No",
+   "n": "5",
+   "m": "No"
+  },
+  {
+   "pert": "B2_temporal_drift",
+   "post": "4690",
+   "a": "Yes",
+   "n": "4",
+   "m": "No"
+  },
+  {
+   "pert": "C3_word_splitting",
+   "post": "4690",
+   "a": "Yes",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "D2_clickbait_llm",
+   "post": "4690",
+   "a": "Partially",
+   "n": "5",
+   "m": "Yes"
+  },
+  {
+   "pert": "E2_presupposition",
+   "post": "4690",
+   "a": "Yes",
+   "n": "5",
+   "m": "No"
+  }
+ ]
+}
